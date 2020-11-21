@@ -1,0 +1,35 @@
+﻿<div class="panel panel-default">
+    <div class="panel-heading">@ViewBag.team.Name</div>
+
+    @foreach (var project in ViewBag.Projects)
+    {
+        <div class="panel panel-default">
+            <div class="panel-heading">@project.Title</div>
+            <div class="panel-body">
+                Descriere proiect: <strong>@project.Description</strong>
+                <br />
+                <span class="label label-success">@project.Date_St</span>
+                <span class="label label-success">@project.Date_End</span>
+            </div>
+            <div class="panel panel-footer">
+                <a class="btn btn-success btn-sm" href="/Projects/Show/@project.id_pr">Afisare Proiect</a>
+
+                <form method="post" action="/Projects/Delete/@project.id_pr">
+                    @Html.HttpMethodOverride(HttpVerbs.Delete)
+                    <button class="btn btn-danger pull-right" type="submit">
+                        Sterge Proiect
+                    </button>
+                </form>
+            </div>
+        </div>
+    }
+    <a class="btn btn-success pull-left"
+       href="/Teams/Edit/@ViewBag.Team.id_team">Modifica echipa</a>
+    <br />W
+    <form method="post" action="/Teams/Delete/@ViewBag.team.id_team">
+        @Html.HttpMethodOverride(HttpVerbs.Delete)
+        <button class="btn btn-danger pull-right" type="submit">
+            Sterge Echipa
+        </button>
+    </form>
+</div>

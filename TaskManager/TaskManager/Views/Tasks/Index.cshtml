@@ -1,0 +1,22 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+@foreach (var task in ViewBag.Tasks)
+{
+    <h2>@task.Title</h2>
+    <p>@task.Description</p>
+    <p>@task.Status</p>
+    <p>Perioada este : @task.Date_St - @task.Date_End</p>
+    <p>Statusul este : @task.Status</p>
+    <a href="/Tasks/Show/@task.id_tsk">Afisare task</a>
+    <br />
+    <hr />
+    <br />
+    <br />
+    <a href="/Tasks/New">Adauga Task</a>
+    <br />
+}
+

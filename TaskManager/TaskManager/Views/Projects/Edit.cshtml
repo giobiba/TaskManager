@@ -1,0 +1,35 @@
+﻿@model TASKMANAGER.Models.Project
+
+<form method="post" action="/Projects/Edit/@Model.id_pr">
+    @Html.HttpMethodOverride(HttpVerbs.Put)
+    @Html.Label("Title", "Titlu Proiect")
+    <br />
+    @Html.TextBox("Title", Model.Title, new { @class = "form-controller" })
+    <br /><br />
+
+    @Html.Label("Description", "Descriere proiect")
+    <br />
+    @Html.TextBox("Description", Model.Description, new { @class = "form-controller" })
+    <br /><br />
+
+    @Html.Label("Date_St", "Data de inceput")
+    <br />
+    @Html.TextBox("Date_St", Model.Date_St, new { @type = "date", @class = "form-controller" })
+    <br /><br />
+
+    @Html.Label("Date_End", "Data de final")
+    <br />
+    @Html.TextBox("Date_End", Model.Date_End, new { @type = "date", @class = "form-controller" })
+
+    <select name="id_team" value=@ViewBag.currTeam>
+        @foreach (var team in ViewBag.Teams)
+        {
+            <option value="@team.id_team">
+                @team.Name
+            </option>
+        }
+    </select>
+
+    <br /><br />
+    <button class="btn btn-success" type="submit">Editeaza proiect</button>
+</form>
