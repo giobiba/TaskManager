@@ -4,7 +4,6 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using TaskManager.Models;
-using AppContext = TaskManager.Models.AppContext;
 
 namespace TaskManager.Controllers
 {
