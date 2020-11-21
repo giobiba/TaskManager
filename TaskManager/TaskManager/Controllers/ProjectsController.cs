@@ -9,7 +9,7 @@ namespace TaskManager.Controllers
 {
     public class ProjectsController : Controller
     {
-
+        private ApplicationDbContext db = new ApplicationDbContext();
         // GET: Project
         public ActionResult Index()
         {
