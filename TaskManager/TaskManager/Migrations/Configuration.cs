@@ -9,7 +9,8 @@ namespace TaskManager.Migrations
     {
         public Configuration()
         {
-            AutomaticMigrationsEnabled = false;
+            AutomaticMigrationsEnabled = true;
+            AutomaticMigrationDataLossAllowed = true;
             ContextKey = "TaskManager.Models.ApplicationDbContext";
         }
 

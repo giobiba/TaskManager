@@ -9,6 +9,8 @@ namespace TaskManager.Controllers
 {
     public class CommentsController : Controller
     {
+
+        private ApplicationDbContext db = new ApplicationDbContext();
         // GET: Comments
         public ActionResult Index()
         {

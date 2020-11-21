@@ -10,6 +10,8 @@ namespace TaskManager.Controllers
     public class TeamsController : Controller
     {
 
+        private ApplicationDbContext db = new ApplicationDbContext();
+
         // GET: Project
         public ActionResult Index()
         {

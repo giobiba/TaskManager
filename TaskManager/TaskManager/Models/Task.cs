@@ -20,6 +20,10 @@ namespace TaskManager.Models
 
         public virtual Project Project { get; set; }
 
+        // user adauga task
+        public string UserId { get; set; }
+        public virtual ApplicationUser User { get; set; }
+
         internal static Task FromResult(int v)
         {
             throw new NotImplementedException();
