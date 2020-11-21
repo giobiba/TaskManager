@@ -1,0 +1,34 @@
+﻿@model TASKMANAGER.Models.Project
+
+<form method="post" action="/Projects/New">
+    @Html.Label("Title", "Titlu Proiect")
+    <br />
+    @Html.TextBox("Title", null, new { @class = "form-controller" })
+    <br /><br />
+
+    @Html.Label("Description", "Descriere proiect")
+    <br />
+    @Html.TextBox("Description", null, new { @class = "form-controller" })
+    <br /><br />
+
+    @Html.Label("Date_St", "Data de inceput")
+    <br />
+    @Html.TextBox("Date_St", null, new { @type = "date", @class = "form-controller" })
+    <br /><br />
+
+    @Html.Label("Date_End", "Data de final")
+    <br />
+    @Html.TextBox("Date_End", null, new { @type = "date", @class = "form-controller" })
+
+    <select name="id_team">
+        @foreach (var team in ViewBag.Teams)
+        {
+            <option value="@team.id_team">
+                @team.Name
+            </option>
+        }
+    </select>
+
+    <br /><br />
+    <button class="btn btn-success" type="submit">Adauga proiect</button>
+</form>
