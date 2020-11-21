@@ -1,0 +1,27 @@
+﻿
+
+<div class="panel panel-default">
+    <div class="panel-heading">@ViewBag.project.Title</div>
+    <div class="panel-body">
+        Descriere proiect: <strong>@ViewBag.project.Description</strong>
+        <br />
+        <span class="label label-success">@ViewBag.project.Date_St</span>
+        <span class="label label-success">@ViewBag.project.Date_End</span>
+    </div>
+
+    <a href="/Teams/Show/@ViewBag.Team.id_team">Echiap @ViewBag.Team.Name</a>
+    <br />
+    <a class="btn btn-success pull-left"
+       href="/Projects/Edit/@ViewBag.project.id_pr">Modifica echipa</a>
+    <br />
+    <form method="post" action="/Projects/Delete/@ViewBag.project.id_pr">
+        @Html.HttpMethodOverride(HttpVerbs.Delete)
+        <button class="btn btn-danger pull-right" type="submit">
+            Sterge Proiect
+        </button>
+    </form>
+    <br />
+
+</div>
+
+

@@ -1,0 +1,12 @@
+﻿@model TASKMANAGER.Models.Team
+
+<br />
+<form method="post" action="/Teams/Edit/@Model.id_team">
+    @Html.HttpMethodOverride(HttpVerbs.Put)
+    <div class="panel panel-default">
+        <label>Nume Echipa</label>
+        <br />
+        <input type="text" name="Name" value="@Model.Name" />
+        <button type="submit"> Editeaza Echipa </button>
+    </div>
+</form>

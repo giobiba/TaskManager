@@ -1,0 +1,27 @@
+﻿
+<h2>Lista Proiecte</h2>
+
+@foreach (var project in ViewBag.Projects)
+{
+    <div class="panel panel-default">
+        <div class="panel-heading">@project.Title</div>
+        <div class="panel-body">
+            Descriere proiect: <strong>@project.Description</strong>
+            <br />
+            <span class="label label-success">@project.Date_St</span>
+            <span class="label label-success">@project.Date_End</span>
+        </div>
+        <div class="panel panel-footer">
+            <a class="btn btn-success btn-sm" href="/Projects/Show/@project.id_pr">Afisare Proiect</a>
+            <a class="btn btn-success btn-sm" href="/Projects/Edit/@project.id_pr">Editeaza Proiect</a>
+
+            <form method="post" action="/Projects/Delete/@project.id_pr">
+                @Html.HttpMethodOverride(HttpVerbs.Delete)
+                <button class="btn btn-danger pull-right" type="submit">
+                    Sterge Proiect
+                </button>
+            </form>
+        </div>
+    </div>
+}
+<a class="btn btn-success btn-sm" href="/Projects/New/">Adauga Proiect</a>

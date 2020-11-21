@@ -1,0 +1,39 @@
+﻿
+@{
+    ViewBag.Title = "Edit";
+}
+
+<h2>Edit Task</h2>
+
+<form method="post" action="/Tasks/Edit/@ViewBag.Task.id_tsk">
+    @Html.HttpMethodOverride(HttpVerbs.Put)
+    <label>Titlu task</label>
+    <br />
+    <input type="text" name="Title" value="@ViewBag.Task.Title" />
+    <br />
+    <br />
+    <label>Descriere Task</label>
+    <br />
+    <input typeof="text" name="Description" value="@ViewBag.Task.Description" />
+    <br />
+    <br />
+    <label>Data Inceput</label>
+    <input type="date" name="Date_St" value="@ViewBag.Task.Date_St" />
+    <br />
+    <br />
+    <label>Data Sfarsit</label>
+    <input type="date" name="Date_End" value="@ViewBag.Task.Date_End" />
+    <br />
+    <br />
+    <label>Status</label>
+    <input type="text" name="Status" value=" @ViewBag.Task.Status" />
+    <label> Selectati Proiectul </label>
+    <select name="id_pr">
+        @foreach (var project in ViewBag.Projects)
+        {
+            <option value="@project.id_pr">@project.Title</option>
+        }
+    </select>
+    <br />
+    <button type="submit">Editeaza Task</button>
+</form>
