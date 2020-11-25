@@ -38,10 +38,10 @@ namespace TaskManager
                     UserManager.AddToRole(user.Id, "Admin");
                 }
             }
-            if (!roleManager.RoleExists("Editor"))
+            if (!roleManager.RoleExists("Organizator"))
             {
                 var role = new IdentityRole();
-                role.Name = "Editor";
+                role.Name = "Organizator";
                 roleManager.Create(role);
             }
             if (!roleManager.RoleExists("User"))
