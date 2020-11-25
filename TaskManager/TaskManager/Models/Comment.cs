@@ -10,7 +10,8 @@ namespace TaskManager.Models
     {
         [Key]
         public int id_com { get; set; }
-        public int id_us { get; set; }
+
+        public int id_user { get; set; }
         public int id_tsk { get; set; }
         public string Content { get; set; }
 

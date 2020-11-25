@@ -11,7 +11,7 @@ namespace TaskManager.Models
     {
         [Key]
         public int id_team { get; set; }
-        public int id_org { get; set; }
+        public int id_org { get; set; } // foreign key catre useri
 
         public string Name { get; set; }
 
