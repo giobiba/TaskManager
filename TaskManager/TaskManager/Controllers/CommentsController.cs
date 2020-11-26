@@ -45,7 +45,7 @@ namespace TaskManager.Controllers
         {
             Comment comm = db.Comments.Find(id);
             ViewBag.Comment = comm;
-            return View();
+            return View(comm);
         }
 
         [HttpPut]
@@ -58,13 +58,18 @@ namespace TaskManager.Controllers
                 {
                     comm.Content = RequestComment.Content;
                     db.SaveChanges();
+                    TempData["message"] = "Comentariul a fost modificat!";
+                    return Redirect("/Tasks/Show/" + comm.id_tsk);
                 }
-                return Redirect("/Tasks/Show/" + comm.id_tsk);
+                
+                return View(comm);
 
             }
             catch (Exception e)
             {
-                return Redirect("/Tasks/Show/" + RequestComment.id_tsk);
+                Comment comm = db.Comments.Find(id);
+                TempData["message"] = "Comentariul nu a fost modificat!";
+                return View(comm);
             }
 
         }

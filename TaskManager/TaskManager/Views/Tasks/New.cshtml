@@ -1,27 +1,31 @@
-﻿
-@{
-    ViewBag.Title = "New";
-}
+﻿@model TaskManager.Models.Task
 
 <h2>Adaugare nou task</h2>
 
 <form method="post" action="/Tasks/New">
-    <label>Titlu task</label>
-    <input type="text" name="Title" />
+    @Html.Label("Title", "Titlu task")
     <br />
-    <label>Descriere Task</label>
-    <input type="text" name="Description" />
+    @Html.HiddenFor(m => m.id_tsk)
+    @Html.TextBox("Title", null, new { @class = "form-controller" })
+    @Html.ValidationMessageFor(m => m.Title, "Title este obligatoriu", new { @class = "text-danger " })
+    <br /><br />
+    @Html.Label("Description", "Descriere Task")
     <br />
-
-    <label>Data inceput</label>
-    <input type="date" name="Date_St" />
+    @Html.TextBox("Description", null, new { @class = "form-controller" })
+    @Html.ValidationMessageFor(m => m.Description, "Descriere este obligatoriu", new { @class = "text-danger " })
+    <br /><br />
+    @Html.Label("Data_St", "Data de start")
     <br />
-    <label>Data Sfarsit</label>
-    <input type="date" name="Date_End" />
+    @Html.TextBox("Date_St", null, new { @type = "date", @class = "form-controller" })
+    <br /><br />
+    @Html.Label("Date_End", "Data de final")
     <br />
-    <label>Status</label>
-    <input type="text" name="Status" />
+    @Html.TextBox("Date_End", null, new { @type = "date", @class = "form-controller" })
+    <br /><br />
+    @Html.Label("Status", "Statusul Taskului")
     <br />
+    @Html.TextBox("Status", null, new { @class = "form-controller" })
+    @Html.ValidationMessageFor(m => m.Description, "Status este obligatoriu", new { @class = "text-danger " })
 
     <label> Selectati Proiectul </label>
     <select name="id_pr">
@@ -32,7 +36,7 @@
     </select>
 
     <br />
-    <button type="submit">Adauga Task</button>
+    <button class="btn btn-success" type="submit">Adauga Task</button>
 
 </form>
 
