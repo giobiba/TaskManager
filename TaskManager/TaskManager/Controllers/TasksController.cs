@@ -51,10 +51,20 @@ namespace TaskManager.Controllers
         {
             try
             {
-                db.Tasks.Add(task);
-                db.SaveChanges();
-                TempData["message"] = "Taskul a fost adaugat!";
-                return RedirectToAction("Index");
+                if(TryUpdateModel(task) && task.Date_St < task.Date_End)
+                {
+
+                    db.Tasks.Add(task);
+                    db.SaveChanges();
+                    TempData["message"] = "Taskul a fost adaugat!";
+                    return RedirectToAction("Index");
+                }
+                if (task.Date_St > task.Date_End)
+                    TempData["message"] = "Data de inceput trebuie sa fie inaintea datei de final";
+                var projects = from prj in db.Projects
+                               select prj;
+                ViewBag.Projects = projects;
+                return View(task);
             }
             catch
             {
@@ -87,6 +97,7 @@ namespace TaskManager.Controllers
                 Task task = db.Tasks.Find(id);
                 if ( TryUpdateModel(task))
                 {
+
                     task = requestTask;
                     db.SaveChanges();
                     TempData["message"] = "Taskul a fost modificat!";
