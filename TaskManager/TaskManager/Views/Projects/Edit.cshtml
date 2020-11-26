@@ -1,35 +1,47 @@
 ﻿@model TaskManager.Models.Project
 
-<form method="post" action="/Projects/Edit/@Model.id_pr">
+@using (Html.BeginForm(actionName: "Edit", controllerName: "Projects"))
+{
     @Html.HttpMethodOverride(HttpVerbs.Put)
     @Html.Label("Title", "Titlu Proiect")
     <br />
-    @Html.TextBox("Title", Model.Title, new { @class = "form-controller" })
-    <br /><br />
+    @Html.EditorFor(m => m.Title, new { htmlAttributes = new { @class = "form-control" } })
+    @Html.ValidationMessageFor(m => m.Title, "Titlul este obligatoriu", new
+    {
+        @class = "text-danger "
+    })
+    <br />
+    <br />
 
     @Html.Label("Description", "Descriere proiect")
     <br />
     @Html.TextBox("Description", Model.Description, new { @class = "form-controller" })
-    <br /><br />
+    <br />
+    <br />
 
     @Html.Label("Date_St", "Data de inceput")
     <br />
     @Html.TextBox("Date_St", Model.Date_St, new { @type = "date", @class = "form-controller" })
-    <br /><br />
+    @Html.ValidationMessageFor(m => m.Date_St, "Data de starts este obligatoriu", new
+    {
+        @class = "text-danger "
+    })
+    <br />
+    <br />
 
     @Html.Label("Date_End", "Data de final")
     <br />
     @Html.TextBox("Date_End", Model.Date_End, new { @type = "date", @class = "form-controller" })
+    @Html.ValidationMessageFor(m => m.Date_End, "Data de final este obligatoriu", new
+    {
+        @class = "text-danger "
+    })
+    <br />
+    @Html.DropDownListFor(m => m.id_team, new SelectList(Model.Teams, "Value", "Text"),
+    Model.Team.Name, new { @class = "form-control" })
+    @Html.ValidationMessageFor(m => m.id_team, "Echipa este obligatorie", new { @class = "text-danger" })
+    <br />
+    <br />
 
-    <select name="id_team" value=@ViewBag.currTeam>
-        @foreach (var team in ViewBag.Teams)
-        {
-            <option value="@team.id_team">
-                @team.Name
-            </option>
-        }
-    </select>
-
-    <br /><br />
     <button class="btn btn-success" type="submit">Editeaza proiect</button>
-</form>
+}

@@ -1,12 +1,14 @@
 ﻿@model TaskManager.Models.Team
-
-<br />
-<form method="post" action="/Teams/Edit/@Model.id_team">
+@using (Html.BeginForm(actionName: "Edit", controllerName: "Teams"))
+{
     @Html.HttpMethodOverride(HttpVerbs.Put)
-    <div class="panel panel-default">
-        <label>Nume Echipa</label>
-        <br />
-        <input type="text" name="Name" value="@Model.Name" />
-        <button type="submit"> Editeaza Echipa </button>
-    </div>
-</form>
+
+    @Html.Label("Name", "Nume Echipa")
+    @Html.EditorFor(m => m.Name, new { htmlAttributes = new { @class = "form-control" } })
+    @Html.ValidationMessageFor(m => m.Name, "Numele este obligatoriu", new
+    {
+        @class = "text-danger "
+    })
+
+    <button class="btn-success" type="submit"> Editeaza Echipa </button>
+}

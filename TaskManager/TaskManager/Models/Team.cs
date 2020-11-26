@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Web;
+using System.Web.Mvc;
 
 namespace TaskManager.Models
 {
@@ -11,8 +12,9 @@ namespace TaskManager.Models
     {
         [Key]
         public int id_team { get; set; }
-        public int id_org { get; set; } // foreign key catre useri
+        public int id_org { get; set; } 
 
+        [Required(ErrorMessage = "Numele este obligatoriu")]
         public string Name { get; set; }
 
         public virtual ICollection<Project> Projects { get; set; }

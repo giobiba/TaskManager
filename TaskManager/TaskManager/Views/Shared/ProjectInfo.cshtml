@@ -1,0 +1,21 @@
+﻿<div class="panel panel-default">
+    <div class="panel-heading">@Model.Title</div>
+    <div class="panel-body">
+        Descriere proiect: <strong>@Model.Description</strong>
+        <br />
+        <span class="label label-success">@Model.Date_St</span>
+        <span class="label label-success">@Model.Date_End</span>
+    </div>
+    <div class="panel panel-footer">
+
+        <a class="btn btn-success btn-sm" href="/Projects/Show/@Model.id_pr">Afisare Proiect</a>
+        <a class="btn btn-success btn-sm" href="/Projects/Edit/@Model.id_pr">Editeaza Proiect</a>
+
+        <form method="post" action="/Projects/Delete/@Model.id_pr">
+            @Html.HttpMethodOverride(HttpVerbs.Delete)
+            <button class="btn btn-danger pull-right" type="submit">
+                Sterge Proiect
+            </button>
+        </form>
+    </div>
+</div>

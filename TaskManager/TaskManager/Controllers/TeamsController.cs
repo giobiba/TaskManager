@@ -17,6 +17,11 @@ namespace TaskManager.Controllers
         {
             var teams = db.Teams;
 
+            if(TempData.ContainsKey("message"))
+            {
+                ViewBag.Message = TempData["Message"];
+            }
+
             ViewBag.Teams = teams;
             return View();
         }
@@ -31,10 +36,9 @@ namespace TaskManager.Controllers
                                select pr;
 
                 ViewBag.Projects = projects;
-                ViewBag.Team = team;
-                return View();
+                return View(team);
             }
-            catch (Exception e)
+            catch
             {
                 return View();
             }
@@ -42,16 +46,24 @@ namespace TaskManager.Controllers
 
         public ActionResult New()
         {
-
             Team team = new Team();
             return View(team);
         }
         [HttpPost]
         public ActionResult New(Team team)
         {
-            db.Teams.Add(team);
-            db.SaveChanges();
-            return RedirectToAction("Index");
+            if(ModelState.IsValid)
+            {
+                db.Teams.Add(team);
+                db.SaveChanges();
+
+                TempData["Message"] = "Echipa a fost adaugata";
+                return RedirectToAction("Index");
+            }
+            else
+            {
+                return View(team);
+            }
         }
 
 
@@ -66,15 +78,17 @@ namespace TaskManager.Controllers
         {
             try
             {
-
                 Team team = db.Teams.Find(id);
                 if (TryUpdateModel(team))
                 {
                     team.Name = requestTeam.Name;
                     db.SaveChanges();
+
+                    TempData["Message"] = "Echipa a fost editata";
+                    return RedirectToAction("Index");
                 }
 
-                return RedirectToAction("Index");
+                return View(team);
             }
             catch
             {
@@ -89,15 +103,19 @@ namespace TaskManager.Controllers
             try
             {
                 Team team = db.Teams.Find(id);
+
                 db.Teams.Remove(team);
                 db.SaveChanges();
 
+                TempData["Message"] = "Echipa a fost stearsa";
                 return RedirectToAction("Index");
             }
             catch
             {
+                TempData["Message"] = "Echipa nu a putut fi stearsa";
                 return RedirectToAction("Index");
             }
         }
+
     }
 }
