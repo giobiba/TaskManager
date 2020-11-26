@@ -26,3 +26,7 @@ textarea {
 .field-validation-valid {
     display: none;
 }
+
+.validation-summary-valid {
+    display: none;
+}
