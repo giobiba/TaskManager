@@ -36,7 +36,6 @@ namespace TaskManager.Controllers
 
         public ActionResult New()
         {
-            
             var projects = from prj in db.Projects
                            select prj;
             Task task = new Task();
@@ -70,11 +69,14 @@ namespace TaskManager.Controllers
         public ActionResult Edit(int id)
         {
             Task task = db.Tasks.Find(id);
-            ViewBag.Task = task;
             ViewBag.Project = task.id_pr;
             var projects = from prj in db.Projects
                            select prj;
             ViewBag.Projects = projects;
+
+            if (TempData.ContainsKey("message"))
+                ViewBag.Message = TempData["message"];
+
             return View(task);
         }
 
@@ -85,16 +87,21 @@ namespace TaskManager.Controllers
             try
             {
                 Task task = db.Tasks.Find(id);
-                if ( TryUpdateModel(task))
+                if ( TryUpdateModel(task) && requestTask.Date_St < requestTask.Date_End)
                 {
                     task = requestTask;
                     db.SaveChanges();
                     TempData["message"] = "Taskul a fost modificat!";
                     return RedirectToAction("Index");
                 }
+
+                if (requestTask.Date_St > requestTask.Date_End)
+                    TempData["message"] = "Data de inceput trebuie sa fie inaintea datei de final";
+
                 var projects = from prj in db.Projects
                                select prj;
                 ViewBag.Projects = projects;
+
                 return View(requestTask);
                 
             }

@@ -1,5 +1,7 @@
 ﻿@model TaskManager.Models.Project
 
+<h3>@ViewBag.Message</h3>
+
 @using (Html.BeginForm(actionName: "New", controllerName: "Projects"))
 {
     @Html.HiddenFor(model => model.id_pr)

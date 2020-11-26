@@ -1,6 +1,8 @@
 ﻿@model TaskManager.Models.Task
 <h2>Edit Task</h2>
 
+<h3>@ViewBag.Message</h3>
+
 <form method="post" action="/Tasks/Edit/@Model.id_tsk">
     @Html.HttpMethodOverride(HttpVerbs.Put)
     @Html.HiddenFor(m => m.id_tsk)

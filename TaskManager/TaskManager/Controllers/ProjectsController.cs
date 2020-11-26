@@ -51,6 +51,9 @@ namespace TaskManager.Controllers
 
                 project.Team = db.Teams.Find(project.id_team);
 
+                if (TempData.ContainsKey("message"))
+                    ViewBag.Message = TempData["message"];
+
                 return View(project);
             }
             catch
@@ -83,6 +86,10 @@ namespace TaskManager.Controllers
                 {
                     requestProject.Teams = GetAllTeams();
                     requestProject.Team = db.Teams.Find(requestProject.id_team);
+
+                    if (requestProject.Date_St > requestProject.Date_End)
+                        TempData["message"] = "Data de inceput trebuie sa fie inaintea datei de final";
+
                     return View(requestProject);
                 }
             }
@@ -99,6 +106,9 @@ namespace TaskManager.Controllers
             Project project = new Project();
             project.Teams = GetAllTeams();
 
+            if (TempData.ContainsKey("message"))
+                ViewBag.Message = TempData["message"];
+
             return View(project);
         }
         [HttpPost]
@@ -114,6 +124,9 @@ namespace TaskManager.Controllers
             }
             else
             {
+                if (project.Date_St > project.Date_End)
+                    TempData["message"] = "Data de inceput trebuie sa fie inaintea datei de final";
+
                 project.Teams = GetAllTeams();
                 return View(project);
             }
