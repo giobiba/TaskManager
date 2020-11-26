@@ -16,6 +16,11 @@ namespace TaskManager.Controllers
             var projects = db.Projects.Include("Team");
 
             ViewBag.Projects = projects;
+            if (TempData.ContainsKey("message"))
+            {
+                ViewBag.Message = TempData["message"];
+            }
+            
             return View();
         }
 
@@ -24,28 +29,35 @@ namespace TaskManager.Controllers
             try
             {
                 Project project = db.Projects.Find(id);
+                project.Team = db.Teams.Find(project.id_team);
 
-                Team team = db.Teams.Find(project.id_team);
-
-                ViewBag.Project = project;
-                ViewBag.Team = team;
-                return View();
+                return View(project);
             }
-            catch (Exception e)
+            catch
             {
-                return View();
+                TempData["message"] = "Proiectul nu exista";
+                return RedirectToAction("Index");
             }
         }
 
 
         public ActionResult Edit(int id)
         {
-            Project project = db.Projects.Find(id);
-            var teams = from tms in db.Teams select tms;
-            var currTeam = db.Teams.Find(project.id_team);
-            ViewBag.Teams = teams;
+            try
+            {
+                Project project = db.Projects.Find(id);
+            
+                project.Teams = GetAllTeams();
 
-            return View(project);
+                project.Team = db.Teams.Find(project.id_team);
+
+                return View(project);
+            }
+            catch
+            {
+                TempData["message"] = "Proiectul nu exista";
+                return RedirectToAction("Index");
+            }
         }
 
         [HttpPut]
@@ -53,37 +65,58 @@ namespace TaskManager.Controllers
         {
             try
             {
-                Project project = db.Projects.Find(id);
-
-                if (TryUpdateModel(project))
+                if (ModelState.IsValid && requestProject.Date_St < requestProject.Date_End)
                 {
-                    project = requestProject;
-                    db.SaveChanges();
-                }
+                    Project project = db.Projects.Find(id);
 
-                return RedirectToAction("Index");
+                    if (TryUpdateModel(project))
+                    {
+                        project = requestProject;
+                        db.SaveChanges();
+
+                        TempData["message"] = "Proiectul a fost modificat cu succes";
+                    }
+
+                    return RedirectToAction("Index");
+                }
+                else
+                {
+                    requestProject.Teams = GetAllTeams();
+                    requestProject.Team = db.Teams.Find(requestProject.id_team);
+                    return View(requestProject);
+                }
             }
             catch
             {
+                requestProject.Teams = GetAllTeams();
+                requestProject.Team = db.Teams.Find(requestProject.id_team);
                 return View(requestProject);
             }
         }
 
-
         public ActionResult New()
         {
-            var teams = from tms in db.Teams select tms;
-
             Project project = new Project();
-            ViewBag.Teams = teams;
+            project.Teams = GetAllTeams();
+
             return View(project);
         }
         [HttpPost]
         public ActionResult New(Project project)
         {
-            db.Projects.Add(project);
-            db.SaveChanges();
-            return RedirectToAction("Index");
+            if (ModelState.IsValid && project.Date_St < project.Date_End)
+            {
+                db.Projects.Add(project);
+                db.SaveChanges();
+
+                TempData["message"] = "Proiectul a fost adaugat cu succes";
+                return RedirectToAction("Index");
+            }
+            else
+            {
+                project.Teams = GetAllTeams();
+                return View(project);
+            }
         }
 
         [HttpDelete]
@@ -95,12 +128,38 @@ namespace TaskManager.Controllers
                 db.Projects.Remove(project);
                 db.SaveChanges();
 
+                TempData["message"] = "Proiectul s-a sters cu succes";
                 return RedirectToAction("Index");
             }
             catch
             {
+                TempData["message"] = "Proiectul nu a fost sters";
                 return RedirectToAction("Index");
             }
+        }
+
+        [NonAction]
+        private IEnumerable<SelectListItem> GetAllTeams()
+        {
+            // generam o lista goala
+            var selectList = new List<SelectListItem>();
+
+            // extragem toate categoriile din baza de date
+            var teams = from cat in db.Teams
+                             select cat;
+
+            // iteram prin categorii
+            foreach (var team in teams)
+            {
+                // adaugam in lista elementele necesare pentru dropdown
+                selectList.Add(new SelectListItem
+                {
+                    Value = team.id_team.ToString(),
+                    Text  = team.Name.ToString()
+                });
+            }
+
+            return selectList;
         }
     }
 }

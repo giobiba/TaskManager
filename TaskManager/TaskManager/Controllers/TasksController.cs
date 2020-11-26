@@ -49,7 +49,7 @@ namespace TaskManager.Controllers
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            catch (Exception e)
+            catch
             {
                 return View();
             }
@@ -89,7 +89,7 @@ namespace TaskManager.Controllers
                 }
                 return RedirectToAction("Index");
             }
-            catch(Exception e)
+            catch
             {
                 return View();
             }

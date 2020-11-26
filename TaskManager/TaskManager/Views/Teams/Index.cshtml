@@ -1,19 +1,10 @@
 ﻿
 <h2>Lista Team</h2>
 
-@foreach (var team in ViewBag.Teams)
-{
-<div class="panel panel-default">
-    <div class="panel-heading">@team.Name</div>
-    <a class="btn btn-success btn-sm" href="/Teams/Show/@team.id_team">Afisare echipa</a>
-    <a class="btn btn-success btn-sm" href="/Teams/Edit/@team.id_team">Editeaza echipa</a>
+<h3 class="danger"> ViewBag.Message </h3>
 
-    <form method="post" action="/Teams/Delete/@team.id_team">
-        @Html.HttpMethodOverride(HttpVerbs.Delete)
-        <button class="btn btn-danger pull-right" type="submit">
-            Sterge Echipa
-        </button>
-    </form>
-</div>
+@foreach (TaskManager.Models.Team team in ViewBag.Teams)
+{
+    @Html.Partial("TeamInfo", team)
 }
 <a class="btn btn-success btn-sm" href="/Teams/New/">Adauga echipa</a>

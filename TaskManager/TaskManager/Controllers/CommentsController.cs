@@ -35,7 +35,7 @@ namespace TaskManager.Controllers
                 db.SaveChanges();
                 return Redirect("/Tasks/Show/" + comm.id_tsk);
             }
-            catch (Exception e)
+            catch
             {
                 return Redirect("/Tasks/Show/" + comm.id_tsk);
             }
@@ -62,7 +62,7 @@ namespace TaskManager.Controllers
                 return Redirect("/Tasks/Show/" + comm.id_tsk);
 
             }
-            catch (Exception e)
+            catch
             {
                 return Redirect("/Tasks/Show/" + RequestComment.id_tsk);
             }

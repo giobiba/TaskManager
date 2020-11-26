@@ -262,6 +262,8 @@
     <Content Include="Views\Tasks\Index.cshtml" />
     <Content Include="Views\Tasks\New.cshtml" />
     <Content Include="Views\Tasks\Show.cshtml" />
+    <Content Include="Views\Shared\ProjectInfo.cshtml" />
+    <Content Include="Views\Shared\TeamInfo.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

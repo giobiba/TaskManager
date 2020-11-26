@@ -1,0 +1,12 @@
+﻿<div class="panel panel-default">
+    <div class="panel-heading">@Model.Name</div>
+    <a class="btn btn-success btn-sm" href="/Teams/Show/@Model.id_team">Afisare echipa</a>
+    <a class="btn btn-success btn-sm" href="/Teams/Edit/@Model.id_team">Editeaza echipa</a>
+
+    <form method="post" action="/Teams/Delete/@Model.id_team">
+        @Html.HttpMethodOverride(HttpVerbs.Delete)
+        <button class="btn btn-danger pull-right" type="submit">
+            Sterge Echipa
+        </button>
+    </form>
+</div>
