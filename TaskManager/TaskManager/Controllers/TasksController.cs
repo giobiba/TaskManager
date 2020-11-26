@@ -15,6 +15,10 @@ namespace TaskManager.Controllers
         {
             var tasks = db.Tasks;
             ViewBag.Tasks = tasks;
+            if (TempData.ContainsKey("message"))
+            {
+                ViewBag.message = TempData["message"].ToString();
+            }
 
             return View();
         }
@@ -32,10 +36,12 @@ namespace TaskManager.Controllers
 
         public ActionResult New()
         {
+            
             var projects = from prj in db.Projects
                            select prj;
+            Task task = new Task();
             ViewBag.Projects = projects;
-            return View();
+            return View(task);
         }
 
         // Post New Task
@@ -47,11 +53,15 @@ namespace TaskManager.Controllers
             {
                 db.Tasks.Add(task);
                 db.SaveChanges();
+                TempData["message"] = "Taskul a fost adaugat!";
                 return RedirectToAction("Index");
             }
             catch
             {
-                return View();
+                var projects = from prj in db.Projects
+                               select prj;
+                ViewBag.Projects = projects;
+                return View(task);
             }
         }
 
@@ -65,7 +75,7 @@ namespace TaskManager.Controllers
             var projects = from prj in db.Projects
                            select prj;
             ViewBag.Projects = projects;
-            return View();
+            return View(task);
         }
 
         // Put Edited Task
@@ -77,21 +87,23 @@ namespace TaskManager.Controllers
                 Task task = db.Tasks.Find(id);
                 if ( TryUpdateModel(task))
                 {
-                    task.Title = requestTask.Title;
-                    task.Description = requestTask.Description;
-                    task.Status = requestTask.Status;
-                    task.Date_St = requestTask.Date_St;
-                    task.Date_End = requestTask.Date_End;
-                    task.id_pr = requestTask.id_pr;
-                    task.id_us = requestTask.id_us;
+                    task = requestTask;
                     db.SaveChanges();
-
+                    TempData["message"] = "Taskul a fost modificat!";
+                    return RedirectToAction("Index");
                 }
-                return RedirectToAction("Index");
+                var projects = from prj in db.Projects
+                               select prj;
+                ViewBag.Projects = projects;
+                return View(requestTask);
+                
             }
             catch
             {
-                return View();
+                var projects = from prj in db.Projects
+                               select prj;
+                ViewBag.Projects = projects;
+                return View(requestTask);
             }
         }
 
@@ -102,6 +114,7 @@ namespace TaskManager.Controllers
             Task task = db.Tasks.Find(id);
             db.Tasks.Remove(task);
             db.SaveChanges();
+            TempData["message"] = "Taskul a fost sters!";
             return RedirectToAction("Index");
         }
     }

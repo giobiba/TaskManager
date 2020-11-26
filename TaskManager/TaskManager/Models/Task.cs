@@ -11,8 +11,11 @@ namespace TaskManager.Models
         [Key]
         public int id_tsk { get; set; }
         public int id_pr { get; set; }
+        [Required(ErrorMessage = "Campul Titlu este obligatoriu")]
         public String Title { get; set; }
+        [Required(ErrorMessage = "Campul Descriere este obligatoriu")]
         public String Description { get; set; }
+        [Required(ErrorMessage = "Campul status este obligatoriu")]
         public String Status { get; set; }
         public DateTime Date_St { get; set; }
         public DateTime Date_End { get; set; }

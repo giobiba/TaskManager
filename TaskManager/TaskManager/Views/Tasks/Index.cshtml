@@ -1,22 +1,28 @@
 ﻿
-@{
-    ViewBag.Title = "Index";
-}
+<h1>@ViewBag.message</h1>
+<h2>Lista taskuri</h2>
 
-<h2>Index</h2>
 @foreach (var task in ViewBag.Tasks)
 {
-    <h2>@task.Title</h2>
-    <p>@task.Description</p>
-    <p>@task.Status</p>
-    <p>Perioada este : @task.Date_St - @task.Date_End</p>
-    <p>Statusul este : @task.Status</p>
-    <a href="/Tasks/Show/@task.id_tsk">Afisare task</a>
-    <br />
-    <hr />
-    <br />
-    <br />
-    <a href="/Tasks/New">Adauga Task</a>
-    <br />
-}
+    <div class="panel panel-default">
+        <div class="panel-heading">@task.Title</div>
+        <div class="panel-body">
+            Descriere proiect: <strong>@task.Description</strong>
+            <br />
+            <span class="label label-success">Perioada: @task.Date_St -@task.Date_End </span>
+            <span class="label label-success">@task.Status</span>
+        </div>
+        <div class="panel panel-footer">
+            <a class="btn btn-success btn-sm" href="/Tasks/Show/@task.id_tsk">Afisare Task</a>
+            <a class="btn btn-success btn-sm" href="/Tasks/Edit/@task.id_tsk">Editeaza Task</a>
 
+            <form method="post" action="/Tasks/Delete/@task.id_tsk">
+                @Html.HttpMethodOverride(HttpVerbs.Delete)
+                <button class="btn btn-danger pull-right" type="submit">
+                    Sterge Task
+                </button>
+            </form>
+        </div>
+    </div>
+}
+<a class="btn btn-success btn-sm" href="/Tasks/New/">Adauga Task</a>

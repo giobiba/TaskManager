@@ -1,14 +1,14 @@
-﻿
-@{
-    ViewBag.Title = "Edit";
-}
-
+﻿@model TaskManager.Models.Comment
 <h2>Editare comentariu</h2>
-<form method="post" action="/Comments/Edit/@ViewBag.Comment.id_com">
+
+<form method="post" action="/Comments/Edit/@Model.id_com">
     @Html.HttpMethodOverride(HttpVerbs.Put)
-    <label>Continut comentariu</label>
+    @Html.HiddenFor(m => m.id_com)
+    @Html.Label("Content", "Continut comentariu")
     <br />
-    <textarea name="Content">@ViewBag.Comment.Content</textarea>
-    <br />
+    @Html.TextBox("Content", Model.Content, new { @class = "form-controller" })
+    @Html.ValidationMessageFor(m => m.Content, "Orice comentariu trebuie sa aiba continut", new { @class = "text-danger " })
+
+    <br /><br />
     <button class="btn btn-success" type="submit"> Editeaza comentariu</button>
 </form>
