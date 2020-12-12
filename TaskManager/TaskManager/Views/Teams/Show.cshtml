@@ -6,6 +6,13 @@
         @Html.Partial("ProjectInfo", project)
     }
 
+    @foreach(var user in ViewBag.Users)
+    {
+        <h4>@user.UserName</h4>
+    }
+
+    <h3>Organizator: @ViewBag.Organizator.UserName</h3>
+
     <a class="btn btn-success pull-left"
        href="/Teams/Edit/@Model.id_team">Modifica echipa</a>
     <br />

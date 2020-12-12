@@ -36,8 +36,15 @@ namespace TaskManager.Controllers
                 var projects = from pr in db.Projects
                                where pr.id_team == team.id_team
                                select pr;
+                ApplicationUser org = db.Users.Find(team.UserId);
 
                 ViewBag.Projects = projects;
+                ViewBag.Organizator = org;
+                ViewBag.Users = from usr in db.Users
+                                join usrteam in db.UserTeams
+                                    on usr.Id equals usrteam.UserId
+                                select usr;
+
                 return View(team);
             }
             catch
@@ -129,6 +136,23 @@ namespace TaskManager.Controllers
                 return RedirectToAction("Index");
             }
         }
+        /*[NonAction]
+        private IEnumerable<SelectListItem> GetAllUsers()
+        {
+            var selectList = new List<SelectListItem>();
 
+            var users = from cat in db.Users select cat;
+
+            foreach(var user in users)
+            {
+                selectList.Add(new SelectListItem
+                {
+                    Value = user.Id.ToString(),
+                    Text = user.Email.ToString()
+                });
+            }
+
+            return selectList;
+        }*/
     }
 }
