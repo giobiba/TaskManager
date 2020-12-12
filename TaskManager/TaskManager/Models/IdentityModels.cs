@@ -30,8 +30,8 @@ namespace TaskManager.Models
         public DbSet<Task> Tasks { get; set; }
         public DbSet<Team> Teams { get; set; }
         public DbSet<Comment> Comments { get; set; }
-
-
+        public DbSet<UserTeams> UserTeams { get; set; }
+ 
         public static ApplicationDbContext Create()
         {
             return new ApplicationDbContext();

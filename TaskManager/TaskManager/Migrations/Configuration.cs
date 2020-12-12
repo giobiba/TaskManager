@@ -10,8 +10,6 @@ namespace TaskManager.Migrations
         public Configuration()
         {
             AutomaticMigrationsEnabled = true;
-            AutomaticMigrationDataLossAllowed = true;
-            ContextKey = "TaskManager.Models.ApplicationDbContext";
         }
 
         protected override void Seed(TaskManager.Models.ApplicationDbContext context)
