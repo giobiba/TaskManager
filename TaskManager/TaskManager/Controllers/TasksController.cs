@@ -7,6 +7,8 @@ using TaskManager.Models;
 
 namespace TaskManager.Controllers
 {
+    [Authorize(Roles = "User,Organizator,Admin")]
+
     public class TasksController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();
@@ -33,7 +35,7 @@ namespace TaskManager.Controllers
         }
 
         // GET pt New
-
+        [Authorize(Roles = "Organizator,Admin")]
         public ActionResult New()
         {
             var projects = from prj in db.Projects
@@ -46,6 +48,7 @@ namespace TaskManager.Controllers
         // Post New Task
 
         [HttpPost]
+        [Authorize(Roles = "Organizator,Admin")]
         public ActionResult New(Task task)
         {
             try
@@ -75,7 +78,7 @@ namespace TaskManager.Controllers
         }
 
         // Get Edit Task
-
+        [Authorize(Roles = "Organizator,Admin")]
         public ActionResult Edit(int id)
         {
             Task task = db.Tasks.Find(id);
@@ -92,6 +95,7 @@ namespace TaskManager.Controllers
 
         // Put Edited Task
         [HttpPut]
+        [Authorize(Roles = "Organizator,Admin")]
         public ActionResult Edit (int id, Task requestTask)
         {
             try
@@ -127,6 +131,7 @@ namespace TaskManager.Controllers
 
         //Delete Task
         [HttpDelete]
+        [Authorize(Roles = "Organizator,Admin")]
         public ActionResult Delete(int id)
         {
             Task task = db.Tasks.Find(id);
