@@ -19,12 +19,12 @@ namespace TaskManager.Models
         public String Status { get; set; }
         public DateTime Date_St { get; set; }
         public DateTime Date_End { get; set; }
-        public int id_us { get; set; }
+        public string UserId { get; set; }
 
         public virtual Project Project { get; set; }
 
         // user adauga task
-        public string UserId { get; set; }
+        
         public virtual ApplicationUser User { get; set; }
 
         internal static Task FromResult(int v)
