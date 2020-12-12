@@ -50,13 +50,14 @@ namespace TaskManager.Controllers
         {
             Team team = new Team();
 
-            // team.id_org = User.Identity.GetUserId();
+            team.UserId = User.Identity.GetUserId();
 
             return View(team);
         }
         [HttpPost]
         public ActionResult New(Team team)
         {
+            team.UserId = User.Identity.GetUserId();
             if(ModelState.IsValid)
             {
 
