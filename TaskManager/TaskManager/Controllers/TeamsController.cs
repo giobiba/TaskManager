@@ -60,8 +60,7 @@ namespace TaskManager.Controllers
             team.UserId = User.Identity.GetUserId();
             if(ModelState.IsValid)
             {
-
-                UserTeams ut = new UserTeams;
+                UserTeams ut = new UserTeams();
                 ut.id_team = team.id_team;
                 ut.UserId = team.UserId;
 
