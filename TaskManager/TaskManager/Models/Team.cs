@@ -12,11 +12,13 @@ namespace TaskManager.Models
     {
         [Key]
         public int id_team { get; set; }
-        public int id_org { get; set; } 
+        public string UserId { get; set; }
 
         [Required(ErrorMessage = "Numele este obligatoriu")]
         public string Name { get; set; }
 
         public virtual ICollection<Project> Projects { get; set; }
+        public virtual ApplicationUser User { get; set; }
+
     }
 }
