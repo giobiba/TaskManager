@@ -7,6 +7,7 @@ using TaskManager.Models;
 
 namespace TaskManager.Controllers
 {
+    [Authorize(Roles = "User,Organizator,Admin")]
     public class CommentsController : Controller
     {
 
@@ -18,6 +19,7 @@ namespace TaskManager.Controllers
         }
 
         [HttpDelete]
+        [Authorize(Roles = "User,Organizator,Admin")]
         public ActionResult Delete(int id)
         {
             Comment comm = db.Comments.Find(id);
@@ -27,6 +29,7 @@ namespace TaskManager.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "User,Organizator,Admin")]
         public ActionResult New(Comment comm)
         {
             try
@@ -41,6 +44,7 @@ namespace TaskManager.Controllers
             }
 
         }
+        [Authorize(Roles = "User,Organizator,Admin")]
         public ActionResult Edit(int id)
         {
             Comment comm = db.Comments.Find(id);
@@ -49,6 +53,7 @@ namespace TaskManager.Controllers
         }
 
         [HttpPut]
+        [Authorize(Roles = "User,Organizator,Admin")]
         public ActionResult Edit(int id, Comment RequestComment)
         {
             try
