@@ -7,6 +7,7 @@ using TaskManager.Models;
 
 namespace TaskManager.Controllers
 {
+    [Authorize(Roles = "User,Admin,Organizator")]
     public class ProjectsController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();
@@ -40,7 +41,7 @@ namespace TaskManager.Controllers
             }
         }
 
-
+        [Authorize(Roles = "Admin,Organizator")]
         public ActionResult Edit(int id)
         {
             try
@@ -64,6 +65,7 @@ namespace TaskManager.Controllers
         }
 
         [HttpPut]
+        [Authorize(Roles = "Admin,Organizator")]
         public ActionResult Edit(int id, Project requestProject)
         {
             try
@@ -133,6 +135,7 @@ namespace TaskManager.Controllers
         }
 
         [HttpDelete]
+        [Authorize(Roles = "Admin,Organizator")]
         public ActionResult Delete(int id)
         {
             try

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNet.Identity;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -7,6 +8,7 @@ using TaskManager.Models;
 
 namespace TaskManager.Controllers
 {
+    [Authorize(Roles = "User,Admin,Organizator")]
     public class TeamsController : Controller
     {
 
@@ -47,6 +49,9 @@ namespace TaskManager.Controllers
         public ActionResult New()
         {
             Team team = new Team();
+
+            // team.id_org = User.Identity.GetUserId();
+
             return View(team);
         }
         [HttpPost]
@@ -66,7 +71,7 @@ namespace TaskManager.Controllers
             }
         }
 
-
+        [Authorize(Roles = "Admin,Organizator")]
         public ActionResult Edit(int id)
         {
             Team team = db.Teams.Find(id);
@@ -74,6 +79,7 @@ namespace TaskManager.Controllers
         }
 
         [HttpPut]
+        [Authorize(Roles = "Admin,Organizator")]
         public ActionResult Edit(int id, Team requestTeam)
         {
             try
@@ -98,6 +104,7 @@ namespace TaskManager.Controllers
 
 
         [HttpDelete]
+        [Authorize(Roles = "Admin,Organizator")]
         public ActionResult Delete(int id)
         {
             try
