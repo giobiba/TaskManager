@@ -9,9 +9,11 @@ namespace TaskManager.Models
 {
     public class UserTeams
     {
+        [Key]
+        public int id_ut { get; set; }
         [ForeignKey("Teams")]
         public int id_team { get; set; }
         [ForeignKey("User")]
-        public int UserId { get; set; }
+        public string UserId { get; set; }
     }
 }
