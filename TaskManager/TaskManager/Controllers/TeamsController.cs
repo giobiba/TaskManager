@@ -84,6 +84,32 @@ namespace TaskManager.Controllers
             }
         }
 
+        public ActionResult NewUser(int id)
+        {
+ 
+            ViewBag.Id = id;
+
+            return View();
+
+        }
+
+        [HttpPost]
+        [Authorize(Roles = "Admin,Organizator")]
+        public ActionResult NewUser(int id, string Email)
+        {
+            UserTeams ut = new UserTeams();
+            ut.id_team = id;
+            ut.UserId = (from usr in db.Users
+                        where usr.Email == Email
+                        select usr.Id).ToString();
+
+            db.UserTeams.Add(ut);
+            db.SaveChanges();
+            TempData["Message"] = "Membrul a fost adaugata";
+            return RedirectToAction("Index");
+        }
+
+
         [Authorize(Roles = "Admin,Organizator")]
         public ActionResult Edit(int id)
         {
