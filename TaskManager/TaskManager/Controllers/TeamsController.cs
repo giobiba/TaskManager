@@ -44,7 +44,10 @@ namespace TaskManager.Controllers
                                 join usrteam in db.UserTeams
                                     on usr.Id equals usrteam.UserId
                                 select usr;
-
+                if (TempData.ContainsKey("message"))
+                {
+                    ViewBag.Message = TempData["Message"];
+                }
                 return View(team);
             }
             catch
@@ -83,6 +86,38 @@ namespace TaskManager.Controllers
                 return View(team);
             }
         }
+
+        public ActionResult NewUser(int id)
+        {
+ 
+            ViewBag.Id = id;
+
+            return View();
+
+        }
+
+        [HttpPost]
+        [Authorize(Roles = "Admin,Organizator")]
+        public ActionResult NewUser(int id, string Email)
+        {
+            UserTeams ut = new UserTeams();
+            ut.id_team = id;
+            var user_adaugat = from usr in db.Users
+                        where usr.Email == Email
+                        select usr;
+            if(user_adaugat.Count() != 1)
+            {
+                TempData["Message"] = "Nu exista utilizator cu acest email";
+                return RedirectToAction("Show/" + id.ToString());
+            }
+            ut.UserId = user_adaugat.First().Id;
+
+            db.UserTeams.Add(ut);
+            db.SaveChanges();
+            TempData["Message"] = "Membrul a fost adaugata";
+            return RedirectToAction("Index");
+        }
+
 
         [Authorize(Roles = "Admin,Organizator")]
         public ActionResult Edit(int id)

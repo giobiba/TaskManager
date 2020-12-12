@@ -265,6 +265,7 @@
     <Content Include="Views\Tasks\Show.cshtml" />
     <Content Include="Views\Shared\ProjectInfo.cshtml" />
     <Content Include="Views\Shared\TeamInfo.cshtml" />
+    <Content Include="Views\Teams\NewUser.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

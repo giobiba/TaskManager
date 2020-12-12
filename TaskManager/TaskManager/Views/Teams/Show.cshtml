@@ -1,4 +1,6 @@
-﻿<div class="panel panel-default">
+﻿
+<h3 class="danger"> @ViewBag.Message </h3>
+<div class="panel panel-default">
     <div class="panel-heading">@Model.Name</div>
     <br />
     @foreach (TaskManager.Models.Project project in ViewBag.Projects)
@@ -6,7 +8,7 @@
         @Html.Partial("ProjectInfo", project)
     }
 
-    @foreach(var user in ViewBag.Users)
+    @foreach (var user in ViewBag.Users)
     {
         <h4>@user.UserName</h4>
     }
@@ -16,6 +18,12 @@
     <a class="btn btn-success pull-left"
        href="/Teams/Edit/@Model.id_team">Modifica echipa</a>
     <br />
+
+
+    <a class="btn btn-success pull-left"
+       href="/Teams/NewUser/@Model.id_team">Adauga Utilizator</a>
+    <br />
+
     <form method="post" action="/Teams/Delete/@Model.id_team">
         @Html.HttpMethodOverride(HttpVerbs.Delete)
         <button class="btn btn-danger pull-right" type="submit">
