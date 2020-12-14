@@ -115,7 +115,7 @@ namespace TaskManager.Controllers
             db.UserTeams.Add(ut);
             db.SaveChanges();
             TempData["Message"] = "Membrul a fost adaugata";
-            return RedirectToAction("Index");
+            return RedirectToAction("Show/" + id.ToString());
         }
 
 
