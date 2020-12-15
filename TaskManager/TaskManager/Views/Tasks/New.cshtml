@@ -22,11 +22,7 @@
     <br />
     @Html.TextBox("Date_End", null, new { @type = "date", @class = "form-controller" })
     <br /><br />
-    @Html.Label("Status", "Statusul Taskului")
-    <br />
-    @Html.TextBox("Status", null, new { @class = "form-controller" })
-    @Html.ValidationMessageFor(m => m.Description, "Status este obligatoriu", new { @class = "text-danger " })
-
+    @{Model.Status = "Not Started";}
     <label> Selectati Proiectul </label>
     <select name="id_pr">
         @foreach (var project in ViewBag.Projects)
