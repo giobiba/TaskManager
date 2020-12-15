@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNet.Identity;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -22,7 +21,7 @@ namespace TaskManager.Controllers
             {
                 ViewBag.message = TempData["message"].ToString();
             }
-            ViewBag.IsOrganizator = false;
+
             return View();
         }
 
@@ -37,7 +36,7 @@ namespace TaskManager.Controllers
 
 
         [Authorize(Roles = "User,Organizator,Admin")]
-        public ActionResult IndexSpecific(int id) // id proiect
+        public ActionResult IndexSpecific(int id)
         {
             try
             {
@@ -45,18 +44,6 @@ namespace TaskManager.Controllers
                             where tsk.id_pr == id
                             select tsk;
                 ViewBag.Tasks = tasks;
-
-                var teamId = (from pr in db.Projects
-                              where pr.id_pr == id
-                              select pr.id_team).First(); // selectam id-ul echipei care are proiectul
-                var team = db.Teams.Find(teamId);
-
-                if (team.UserId == User.Identity.GetUserId())
-                {
-                    ViewBag.IsOrganizator = true;
-                }
-                else
-                    ViewBag.IsOrganizator = false;
                 return View("Index");
             }
             catch
