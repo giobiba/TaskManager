@@ -119,7 +119,7 @@ namespace TaskManager.Controllers
                         db.Tasks.Add(task);
                         db.SaveChanges();
                         TempData["message"] = "Taskul a fost adaugat!";
-                        return RedirectToAction("Index");
+                        return Redirect("/Tasks/IndexSpecific/" + task.id_pr);
                     }
                     if (task.Date_St > task.Date_End)
                         TempData["message"] = "Data de inceput trebuie sa fie inaintea datei de final";
