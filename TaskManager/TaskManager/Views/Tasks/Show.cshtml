@@ -19,7 +19,7 @@
         <a class="btn btn-success pull-left"
            href="/Tasks/Edit/@ViewBag.Task.id_tsk">Modifica task</a>
         <a class="btn btn-success pull-left"
-            href="/Tasks/AddUserToTask/@ViewBag.Task.id_tsk">Asigneaza utilizator</a>
+           href="/Tasks/AddUserToTask/@ViewBag.Task.id_tsk">Asigneaza utilizator</a>
         <form method="post" action="/Tasks/Delete/@ViewBag.Task.id_tsk">
             @Html.HttpMethodOverride(HttpVerbs.Delete)
             <button class="btn btn-danger pull-right" type="submit">
