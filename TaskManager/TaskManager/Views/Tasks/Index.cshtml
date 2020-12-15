@@ -25,4 +25,5 @@
         </div>
     </div>
 }
-<a class="btn btn-success btn-sm" href="/Tasks/New/">Adauga Task</a>
+@if (User.IsInRole("Admin") || User.IsInRole("Organizator"))
+    {<a class="btn btn-success btn-sm" href="/Tasks/New/">Adauga Task</a>}

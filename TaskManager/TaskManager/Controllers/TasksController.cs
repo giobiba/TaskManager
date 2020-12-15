@@ -34,6 +34,24 @@ namespace TaskManager.Controllers
             return View();
         }
 
+
+        [Authorize(Roles = "User,Organizator,Admin")]
+        public ActionResult IndexSpecific(int id)
+        {
+            try
+            {
+                var tasks = from tsk in db.Tasks
+                            where tsk.id_pr == id
+                            select tsk;
+                ViewBag.Tasks = tasks;
+                return View("Index");
+            }
+            catch
+            {
+                return Redirect("/Projects/Show/" + id);
+            }
+        }
+
         // GET pt New
         [Authorize(Roles = "Organizator,Admin")]
         public ActionResult New()
@@ -76,6 +94,8 @@ namespace TaskManager.Controllers
                 return View(task);
             }
         }
+
+       
 
         // Get Edit Task
         [Authorize(Roles = "Organizator,Admin")]
