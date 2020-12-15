@@ -51,6 +51,13 @@ namespace TaskManager.Controllers
             try
             {
                 Project project = db.Projects.Find(id);
+
+                if (project == null)
+                {
+                    TempData["message"] = "Proiectul nu exista";
+                    return RedirectToAction("Index");
+                }
+
                 project.Team = db.Teams.Find(project.id_team);
 
                 return View(project);
@@ -68,7 +75,13 @@ namespace TaskManager.Controllers
             try
             {
                 Project project = db.Projects.Find(id);
-            
+
+                if (project == null)
+                {
+                    TempData["message"] = "Proiectul nu exista";
+                    return RedirectToAction("Index");
+                }
+
                 project.Teams = GetAllTeams();
 
                 project.Team = db.Teams.Find(project.id_team);
@@ -94,6 +107,12 @@ namespace TaskManager.Controllers
                 if (ModelState.IsValid && requestProject.Date_St < requestProject.Date_End)
                 {
                     Project project = db.Projects.Find(id);
+
+                    if (project == null)
+                    {
+                        TempData["message"] = "Proiectul nu exista";
+                        return RedirectToAction("Index");
+                    }
 
                     if (TryUpdateModel(project))
                     {

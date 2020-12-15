@@ -1,9 +1,4 @@
-﻿
-@{
-    ViewBag.Title = "Show";
-}
-
-<a href="/Tasks/Index">Inapoi la toate taskurile</a>
+﻿<a href="/Tasks/Index">Inapoi la toate taskurile</a>
 <br />
 <a class="btn btn-info" href="/Tasks/New">Adauga task</a>
 <br />
@@ -18,9 +13,13 @@
         <br />
         <span class="label label-success">Status: @ViewBag.Task.Status </span>
         <br />
+        <h5>@ViewBag.User</h5>
+        <br />
         <hr>
         <a class="btn btn-success pull-left"
            href="/Tasks/Edit/@ViewBag.Task.id_tsk">Modifica task</a>
+        <a class="btn btn-success pull-left"
+            href="/Tasks/AddUserToTask/@ViewBag.Task.id_tsk">Asigneaza utilizator</a>
         <form method="post" action="/Tasks/Delete/@ViewBag.Task.id_tsk">
             @Html.HttpMethodOverride(HttpVerbs.Delete)
             <button class="btn btn-danger pull-right" type="submit">
