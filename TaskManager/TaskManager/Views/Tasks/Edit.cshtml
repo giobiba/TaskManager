@@ -5,39 +5,46 @@
 
 <form method="post" action="/Tasks/Edit/@Model.id_tsk">
     @Html.HttpMethodOverride(HttpVerbs.Put)
-    @Html.HiddenFor(m => m.id_tsk)
-    @Html.Label("Title", "Titlu task")
-    <br />
-    @Html.TextBox("Title", Model.Title, new { @class = "form-controller" })
-    @Html.ValidationMessageFor(m => m.Title, "Title este obligatoriu", new { @class = "text-danger " })
+    @if (ViewBag.IsUser == false)
+    {
+        @Html.HiddenFor(m => m.id_tsk)
+        @Html.Label("Title", "Titlu task")
+        <br />
+        @Html.TextBox("Title", Model.Title, new { @class = "form-controller" })
+        @Html.ValidationMessageFor(m => m.Title, "Title este obligatoriu", new { @class = "text-danger " })
 
-    <br /><br />
-    @Html.Label("Description", "Descriere Task")
-    <br />
-    @Html.TextBox("Description", Model.Description, new { @class = "form-controller" })
-    @Html.ValidationMessageFor(m => m.Description, "Descriere este obligatoriu", new { @class = "text-danger " })
-    <br /><br />
-    @Html.Label("Data_St", "Data de start")
-    <br />
-    @Html.TextBox("Date_St", Model.Date_St, new { @type = "date", @class = "form-controller" })
-    <br /><br />
-    @Html.Label("Date_End", "Data de final")
-    <br />
-    @Html.TextBox("Date_End", Model.Date_End, new { @type = "date", @class = "form-controller" })
-    <br /><br />
-    @Html.Label("Status", "Statusul Taskului")
-    <br />
-    @Html.TextBox("Status", Model.Status, new { @class = "form-controller" })
-    @Html.ValidationMessageFor(m => m.Description, "Status este obligatoriu", new { @class = "text-danger " })
-
-    <label> Selectati Proiectul </label>
-    <select name="id_pr">
-        @foreach (var project in ViewBag.Projects)
+        <br /><br />
+        @Html.Label("Description", "Descriere Task")
+        <br />
+        @Html.TextBox("Description", Model.Description, new { @class = "form-controller" })
+        @Html.ValidationMessageFor(m => m.Description, "Descriere este obligatoriu", new { @class = "text-danger " })
+        <br /><br />
+        @Html.Label("Data_St", "Data de start")
+        <br />
+        @Html.TextBox("Date_St", Model.Date_St, new { @type = "date", @class = "form-controller" })
+        <br /><br />
+        @Html.Label("Date_End", "Data de final")
+        <br />
+        @Html.TextBox("Date_End", Model.Date_End, new { @type = "date", @class = "form-controller" })
+        <br /><br />
+    }
+    <label> Selectati Statusul </label>
+    <select name="Status">
+        @foreach (var status in ViewBag.Status)
         {
-            <option value="@project.id_pr">@project.Title</option>
+            <option value="@status">@status</option>
         }
     </select>
-
+    @if (ViewBag.IsUser == false)
+    {
+        <label> Selectati Proiectul </label>
+        <select name="id_pr">
+            @foreach (var project in ViewBag.Projects)
+            {
+                <option value="@project.id_pr">@project.Title</option>
+            }
+        </select>
+    }
     <br /><br />
     <button class="btn btn-success" type="submit">Editeaza task</button>
 </form>

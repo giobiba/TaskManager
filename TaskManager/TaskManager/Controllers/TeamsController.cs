@@ -90,8 +90,11 @@ namespace TaskManager.Controllers
             var userOldRole = userCurr.Roles.FirstOrDefault().RoleId;
             var userRoleName = (from role in db.Roles where role.Id == userOldRole select role.Name).First();
 
-            UserManager.RemoveFromRole(userCurr.Id, userRoleName); 
-            UserManager.AddToRole(userCurr.Id, "Organizator");
+            if(!User.IsInRole("Admin"))
+            {
+                UserManager.RemoveFromRole(userCurr.Id, userRoleName);
+                UserManager.AddToRole(userCurr.Id, "Organizator");
+            }
 
             // trebuie un mod in care sa se dea automat refresh la rol
 

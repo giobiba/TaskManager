@@ -46,8 +46,9 @@ namespace TaskManager.Controllers
             {
                 ViewBag.User = "Acest task nu are utilizator";
             }
+            else
+                ViewBag.User = user.UserName;
             ViewBag.Task = task;
-            ViewBag.User = user.UserName;
             return View();
         }
 
@@ -112,9 +113,9 @@ namespace TaskManager.Controllers
             {
                 try
                 {
+                    task.Status = "Not started";
                     if (TryUpdateModel(task) && task.Date_St < task.Date_End)
                     {
-
                         db.Tasks.Add(task);
                         db.SaveChanges();
                         TempData["message"] = "Taskul a fost adaugat!";
@@ -125,6 +126,7 @@ namespace TaskManager.Controllers
                     var projects = from prj in db.Projects
                                    select prj;
                     ViewBag.Projects = projects;
+                    TempData["message"] = "Taskul nu a putut fi adaugat";
                     return View(task);
                 }
                 catch
@@ -190,15 +192,23 @@ namespace TaskManager.Controllers
             return RedirectToAction("Show/" + id);
         }
         // Get Edit Task
-        [Authorize(Roles = "Organizator,Admin")]
+        [Authorize(Roles = "User,Organizator,Admin")]
         public ActionResult Edit(int id)
         {
+            var userId = User.Identity.GetUserId(); // userul curent
+
             Task task = db.Tasks.Find(id);
             var teamId = (from pr in db.Projects
                           where pr.id_pr == task.id_pr
                           select pr.id_team).First(); // selectam id-ul echipei de la care avem taskul
             var team = db.Teams.Find(teamId);
-            if (team.UserId == User.Identity.GetUserId() || User.IsInRole("Admin"))
+            
+            var ut_exists = (from u in db.UserTeams
+                     where u.id_team == teamId &&
+                     u.UserId == userId
+                     select u).Count() > 0; // este true daca userul cure
+
+            if (ut_exists || User.IsInRole("Admin"))
             {
                 ViewBag.Project = task.id_pr;
                 var projects = from prj in db.Projects
@@ -207,6 +217,16 @@ namespace TaskManager.Controllers
 
                 if (TempData.ContainsKey("message"))
                     ViewBag.Message = TempData["message"];
+
+
+                string[] statusuri = { "Not started", "In progress", "completed" };
+                ViewBag.Status = statusuri;
+
+                ViewBag.IsUser = false;
+                if (team.UserId != userId)
+                {
+                    ViewBag.IsUser = true;
+                }
 
                 return View(task);
             }
@@ -220,15 +240,26 @@ namespace TaskManager.Controllers
 
         // Put Edited Task
         [HttpPut]
-        [Authorize(Roles = "Organizator,Admin")]
+        [Authorize(Roles = "User,Organizator,Admin")]
         public ActionResult Edit (int id, Task requestTask)
         {
             try
             {
                 Task task = db.Tasks.Find(id);
-                if ( TryUpdateModel(task) && requestTask.Date_St < requestTask.Date_End)
-                {
+                var currOrg = (from prj in db.Projects // selectam organizatorul curent
+                              join tm in db.Teams
+                              on prj.id_team equals tm.id_team
+                              select tm.UserId).First();
 
+                if (currOrg != User.Identity.GetUserId()) // daca nu e organizatorul din echipa in care apartine taskul
+                {
+                    task.Status = requestTask.Status;
+                    db.SaveChanges();
+                    TempData["message"] = "Taskul a fost modificat!";
+                    return RedirectToAction("Index");
+                }
+                if ( TryUpdateModel(task) && requestTask.Date_St < requestTask.Date_End) // cazul in care este organizator/ admin
+                {
                     task = requestTask;
                     db.SaveChanges();
                     TempData["message"] = "Taskul a fost modificat!";
@@ -242,6 +273,9 @@ namespace TaskManager.Controllers
                                select prj;
                 ViewBag.Projects = projects;
 
+                string[] statusuri = { "Not started", "In progress", "completed" };
+                ViewBag.Status = statusuri;
+
                 return View(requestTask);
                 
             }
@@ -250,6 +284,10 @@ namespace TaskManager.Controllers
                 var projects = from prj in db.Projects
                                select prj;
                 ViewBag.Projects = projects;
+
+                string[] statusuri = { "Not started", "In progress", "completed" };
+                ViewBag.Status = statusuri;
+
                 return View(requestTask);
             }
         }

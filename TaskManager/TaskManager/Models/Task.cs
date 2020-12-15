@@ -15,7 +15,6 @@ namespace TaskManager.Models
         public String Title { get; set; }
         [Required(ErrorMessage = "Campul Descriere este obligatoriu")]
         public String Description { get; set; }
-        [Required(ErrorMessage = "Campul status este obligatoriu")]
         public String Status { get; set; }
         public DateTime Date_St { get; set; }
         public DateTime Date_End { get; set; }
