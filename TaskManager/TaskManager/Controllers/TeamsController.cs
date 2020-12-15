@@ -21,14 +21,27 @@ namespace TaskManager.Controllers
         // GET: Project
         public ActionResult Index()
         {
-            var teams = db.Teams;
 
-            if(TempData.ContainsKey("message"))
+            if (User.IsInRole("Admin"))
+            {
+                var teams = db.Teams;
+                ViewBag.Teams = teams;
+            }      
+            else
+            {
+                var userId = User.Identity.GetUserId();
+                var teams = from tems in db.Teams
+                            join usrteam in db.UserTeams
+                                on tems.id_team equals usrteam.id_team
+                            where usrteam.UserId == userId
+                            select tems;
+                ViewBag.Teams = teams;
+            }
+            
+            if (TempData.ContainsKey("message"))
             {
                 ViewBag.Message = TempData["Message"];
             }
-
-            ViewBag.Teams = teams;
             return View();
         }
 

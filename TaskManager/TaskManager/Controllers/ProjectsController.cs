@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNet.Identity;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -14,9 +15,29 @@ namespace TaskManager.Controllers
         // GET: Project
         public ActionResult Index()
         {
-            var projects = db.Projects.Include("Team");
 
-            ViewBag.Projects = projects;
+            if ( User.IsInRole("Admin"))
+            {
+                var projects = db.Projects.Include("Team");
+                ViewBag.Projects = projects;
+            }
+            else
+            {
+                var userId = User.Identity.GetUserId();
+                var teams = from tems in db.Teams
+                            join usrteam in db.UserTeams
+                                on tems.id_team equals usrteam.id_team
+                            where usrteam.UserId == userId
+                            select tems;
+                var projects = from prj in db.Projects
+                               join tems in teams
+                                    on prj.id_team equals tems.id_team
+                               select prj;
+                ViewBag.Projects = projects;
+
+            }
+
+            
             if (TempData.ContainsKey("message"))
             {
                 ViewBag.Message = TempData["message"];

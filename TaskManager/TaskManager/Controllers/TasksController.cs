@@ -35,10 +35,15 @@ namespace TaskManager.Controllers
             return View();
         }
 
-
+        //get specific 
         [Authorize(Roles = "User,Organizator,Admin")]
         public ActionResult IndexSpecific(int id) // id proiect
         {
+
+            if (TempData.ContainsKey("message"))
+            {
+                ViewBag.message = TempData["message"].ToString();
+            }
             try
             {
                 var tasks = from tsk in db.Tasks
@@ -82,29 +87,42 @@ namespace TaskManager.Controllers
         [Authorize(Roles = "Organizator,Admin")]
         public ActionResult New(Task task)
         {
-            try
-            {
-                if(TryUpdateModel(task) && task.Date_St < task.Date_End)
-                {
 
-                    db.Tasks.Add(task);
-                    db.SaveChanges();
-                    TempData["message"] = "Taskul a fost adaugat!";
-                    return RedirectToAction("Index");
-                }
-                if (task.Date_St > task.Date_End)
-                    TempData["message"] = "Data de inceput trebuie sa fie inaintea datei de final";
-                var projects = from prj in db.Projects
-                               select prj;
-                ViewBag.Projects = projects;
-                return View(task);
-            }
-            catch
+            var teamId = (from pr in db.Projects
+                          where pr.id_pr == task.id_pr
+                          select pr.id_team).First(); // selectam id-ul echipei la care vrem sa atasam proiectul
+            var team = db.Teams.Find(teamId);
+            if (team.UserId == User.Identity.GetUserId() || User.IsInRole("Admin"))
             {
-                var projects = from prj in db.Projects
-                               select prj;
-                ViewBag.Projects = projects;
-                return View(task);
+                try
+                {
+                    if (TryUpdateModel(task) && task.Date_St < task.Date_End)
+                    {
+
+                        db.Tasks.Add(task);
+                        db.SaveChanges();
+                        TempData["message"] = "Taskul a fost adaugat!";
+                        return RedirectToAction("Index");
+                    }
+                    if (task.Date_St > task.Date_End)
+                        TempData["message"] = "Data de inceput trebuie sa fie inaintea datei de final";
+                    var projects = from prj in db.Projects
+                                   select prj;
+                    ViewBag.Projects = projects;
+                    return View(task);
+                }
+                catch
+                {
+                    var projects = from prj in db.Projects
+                                   select prj;
+                    ViewBag.Projects = projects;
+                    return View(task);
+                }
+            }
+            else
+            {
+                TempData["message"] = "Nu sunteti organizatorul bun";
+                return Redirect("/Tasks/IndexSpecific/" + task.id_pr);
             }
         }
 
@@ -115,15 +133,28 @@ namespace TaskManager.Controllers
         public ActionResult Edit(int id)
         {
             Task task = db.Tasks.Find(id);
-            ViewBag.Project = task.id_pr;
-            var projects = from prj in db.Projects
-                           select prj;
-            ViewBag.Projects = projects;
+            var teamId = (from pr in db.Projects
+                          where pr.id_pr == task.id_pr
+                          select pr.id_team).First(); // selectam id-ul echipei de la care avem taskul
+            var team = db.Teams.Find(teamId);
+            if (team.UserId == User.Identity.GetUserId() || User.IsInRole("Admin"))
+            {
+                ViewBag.Project = task.id_pr;
+                var projects = from prj in db.Projects
+                                select prj;
+                ViewBag.Projects = projects;
 
-            if (TempData.ContainsKey("message"))
-                ViewBag.Message = TempData["message"];
+                if (TempData.ContainsKey("message"))
+                    ViewBag.Message = TempData["message"];
 
-            return View(task);
+                return View(task);
+            }
+            else
+            {
+                TempData["message"] = "Nu sunteti organizatorul corespunzator acestui task";
+                return Redirect("/Tasks/IndexSpecific/" + task.id_pr);
+            }
+                
         }
 
         // Put Edited Task
@@ -168,10 +199,23 @@ namespace TaskManager.Controllers
         public ActionResult Delete(int id)
         {
             Task task = db.Tasks.Find(id);
-            db.Tasks.Remove(task);
-            db.SaveChanges();
-            TempData["message"] = "Taskul a fost sters!";
-            return RedirectToAction("Index");
+            var teamId = (from pr in db.Projects
+                          where pr.id_pr == task.id_pr
+                          select pr.id_team).First(); // selectam id-ul echipei de la care avem taskul
+            var team = db.Teams.Find(teamId);
+            if (team.UserId == User.Identity.GetUserId() || User.IsInRole("Admin"))
+            {
+                db.Tasks.Remove(task);
+                db.SaveChanges();
+                TempData["message"] = "Taskul a fost sters!";
+                return Redirect("/Tasks/IndexSpecific/" + task.id_pr);
+            }
+            else
+            {
+                TempData["message"] = "Nu aveti dreptul sa stergeti taskul";
+                return Redirect("/Tasks/IndexSpecific/" + task.id_pr);
+            }
+            
         }
     }
 }
