@@ -18,6 +18,9 @@ namespace TaskManager.Controllers
         {
             var tasks = db.Tasks;
             ViewBag.Tasks = tasks;
+
+            // de adaugat utilizatorii care au asignat task-ul
+
             if (TempData.ContainsKey("message"))
             {
                 ViewBag.message = TempData["message"].ToString();
@@ -30,8 +33,21 @@ namespace TaskManager.Controllers
 
         public ActionResult Show(int id)
         {
+            
             Task task = db.Tasks.Find(id);
+            ApplicationUser user = db.Users.Find(task.UserId);
+
+            if(task == null)
+            {
+                TempData["message"] = "Taskul respectiv nu exista";
+                return Redirect("/Projects/Index");
+            } 
+            if(user == null)
+            {
+                ViewBag.User = "Acest task nu are utilizator";
+            }
             ViewBag.Task = task;
+            ViewBag.User = user.UserName;
             return View();
         }
 
@@ -108,8 +124,53 @@ namespace TaskManager.Controllers
             }
         }
 
-       
+        [Authorize(Roles = "Organizator,Admin")]
+        public ActionResult AddUserToTask(int id)
+        {
+            // aflam echipa curenta
+            var idTeam = (from pr in db.Projects
+                          join task in db.Tasks on pr.id_pr equals task.id_pr
+                          select pr.id_team).First();
+            //verific daca e organizatorul bun sau admin
+            if (User.IsInRole("Organizator"))
+            {
+                Team team = db.Teams.Find(idTeam);
+                Task task = db.Tasks.Find(id);
 
+                if (task == null || team == null)
+                {
+                    TempData["message"] = "Taskul respectiv nu exista";
+                    return Redirect("/Projects/Index");
+                }
+                if (team.UserId != User.Identity.GetUserId())
+                {
+                    TempData["Message"] = "Nu sunteti organizator pentru acest proiect";
+                    return RedirectToAction("IndexSpecific/" + task.id_pr);
+                }
+            }
+
+            ViewBag.IdTask = id;
+            ViewBag.Users = GetAllUsers(idTeam);
+            return View();
+        }
+
+        [HttpPut]
+        [Authorize(Roles = "Organizator,Admin")]
+        public ActionResult AddUserToTask(int id, string user)
+        {
+
+            Task task = db.Tasks.Find(id);
+
+            //verificam daca id-ul taskului este valid
+            if(task == null)
+            {
+                TempData["Message"] = "Assignarea utilizatorului nu a putut fi facuta. Task-ul nu exista";
+            }
+
+            task.UserId = user;
+            db.SaveChanges();
+            return RedirectToAction("Show/" + id);
+        }
         // Get Edit Task
         [Authorize(Roles = "Organizator,Admin")]
         public ActionResult Edit(int id)
@@ -172,6 +233,27 @@ namespace TaskManager.Controllers
             db.SaveChanges();
             TempData["message"] = "Taskul a fost sters!";
             return RedirectToAction("Index");
+        }
+
+        [NonAction]
+        private IEnumerable<SelectListItem> GetAllUsers(int idTeam)
+        {
+            var selectList = new List<SelectListItem>();
+            var Users = from ut in db.UserTeams
+                        join us in db.Users on ut.UserId equals us.Id
+                        where ut.id_team == idTeam
+                        select us;
+            foreach (var user in Users)
+            {
+                // adaugam in lista elementele necesare pentru dropdown
+                selectList.Add(new SelectListItem
+                {
+                    Value = user.Id.ToString(),
+                    Text = user.UserName.ToString()
+                });
+            }
+
+            return selectList;
         }
     }
 }
