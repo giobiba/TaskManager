@@ -37,6 +37,7 @@
             <div class="row">
                 <div class="col-md-2"></div>
                 <div class="col-md-8">
+                    <span class="label label-success">Comentariu lasat de : @comm.User.UserName </span>
                     <div>
                         <p>@comm.Content</p>
                     </div>
@@ -62,18 +63,6 @@
             <div class="col-md-2">
             </div>
             <div class="col-md-8">
-                <span class="label label-success">Comentariu lasat de : @comm.User.UserName </span>
-                <div>
-                    <p>@comm.Content</p>
-                </div>
-                <div style="display: inline-block; float : left; margin-right: 15px">
-                    <a class="glyphicon glyphicon-pencil"
-                       href="/Comments/Edit/@comm.id_com"></a>
-                </div>
-                <div style="display: inline-block; float : left">
-                    <form method="post" action="/Comments/Delete/@comm.id_com">
-                        @Html.HttpMethodOverride(HttpVerbs.Delete)
-                        <button class="glyphicon glyphicon-trash" style="border: none; background: transparent" type="submit"></button>
                 <div class="panel">
                     <form method="post" action="/Comments/New">
                         <div class="panel-body">
