@@ -13,17 +13,13 @@ namespace TaskManager.Controllers
     {
 
         private ApplicationDbContext db = new ApplicationDbContext();
-        // GET: Comments
-        public ActionResult Index()
-        {
-            return View();
-        }
-
+        
         [HttpDelete]
         [Authorize(Roles = "User,Organizator,Admin")]
         public ActionResult Delete(int id)
         {
             Comment comm = db.Comments.Find(id);
+
             var userId = User.Identity.GetUserId();
             Team team = db.Teams.Find(db.Projects.Find(db.Tasks.Find(comm.id_tsk).id_pr).id_team);
             if (comm.UserId == userId || User.IsInRole("Admin") || (User.IsInRole("Organizator") && team.UserId == User.Identity.GetUserId()))
@@ -38,6 +34,7 @@ namespace TaskManager.Controllers
                 return Redirect("/Tasks/Show/" + comm.id_tsk);
             }
                 
+
         }
 
         [HttpPost]
@@ -50,6 +47,13 @@ namespace TaskManager.Controllers
             {
                 comm.UserId = userId;
                 comm.User = db.Users.Find(userId);
+                Task task = db.Tasks.Find(comm.id_tsk);
+                if (task.Status == "Completed")
+                {
+                    TempData["message"] = "Taskul este finalizat si alte comentarii nu mai pot fi lasate";
+                    return Redirect("/Tasks/Show/" + comm.id_tsk);
+                }
+                
                 db.Comments.Add(comm);
                 db.SaveChanges();
                 return Redirect("/Tasks/Show/" + comm.id_tsk);
