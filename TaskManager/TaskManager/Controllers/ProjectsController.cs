@@ -15,7 +15,7 @@ namespace TaskManager.Controllers
         // GET: Project
         public ActionResult Index()
         {
-
+            ViewBag.IsOrganizator = false;
             if ( User.IsInRole("Admin"))
             {
                 var projects = db.Projects.Include("Team");
@@ -57,6 +57,11 @@ namespace TaskManager.Controllers
                 }
 
                 project.Team = db.Teams.Find(project.id_team);
+
+                ViewBag.IsOrganizator = false;
+                if (project.Team.UserId == User.Identity.GetUserId()) {
+                    ViewBag.IsOrganizator = true;
+                }
 
                 return View(project);
             }

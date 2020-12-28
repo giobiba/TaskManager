@@ -8,6 +8,7 @@
     @if (ViewBag.IsUser == false)
     {
         @Html.HiddenFor(m => m.id_tsk)
+        @Html.HiddenFor(m => m.id_pr)
         @Html.Label("Title", "Titlu task")
         <br />
         @Html.TextBox("Title", Model.Title, new { @class = "form-controller" })
@@ -35,16 +36,6 @@
             <option value="@status">@status</option>
         }
     </select>
-    @if (ViewBag.IsUser == false)
-    {
-        <label> Selectati Proiectul </label>
-        <select name="id_pr">
-            @foreach (var project in ViewBag.Projects)
-            {
-                <option value="@project.id_pr">@project.Title</option>
-            }
-        </select>
-    }
     <br /><br />
     <button class="btn btn-success" type="submit">Editeaza task</button>
 </form>

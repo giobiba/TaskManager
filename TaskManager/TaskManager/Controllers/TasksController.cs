@@ -25,6 +25,8 @@ namespace TaskManager.Controllers
             {
                 ViewBag.message = TempData["message"].ToString();
             }
+            ViewBag.IsCompleted = false;
+
             return View();
         }
 
@@ -36,7 +38,9 @@ namespace TaskManager.Controllers
             {
                 ViewBag.message = TempData["message"].ToString();
             }
+
             Task task = db.Tasks.Find(id);
+            Team team = db.Teams.Find(db.Projects.Find(task.id_pr).id_team);
             ApplicationUser user = db.Users.Find(task.UserId);
 
             if(task == null)
@@ -55,6 +59,10 @@ namespace TaskManager.Controllers
             {
                 ViewBag.message = TempData["message"];
             }
+
+            
+            ViewBag.CurrentUser = User.Identity.GetUserId();
+            ViewBag.IsOrganizator = User.Identity.GetUserId() == team.UserId;
 
             ViewBag.IsCompleted = false;
             if (task.Status == "Completed")
@@ -223,9 +231,6 @@ namespace TaskManager.Controllers
             if (ut_exists || User.IsInRole("Admin"))
             {
                 ViewBag.Project = task.id_pr;
-                var projects = from prj in db.Projects
-                                select prj;
-                ViewBag.Projects = projects;
 
                 if (TempData.ContainsKey("message"))
                     ViewBag.Message = TempData["message"];
@@ -268,14 +273,14 @@ namespace TaskManager.Controllers
                     task.Status = requestTask.Status;
                     db.SaveChanges();
                     TempData["message"] = "Taskul a fost modificat!";
-                    return RedirectToAction("Index");
+                    return Redirect("/Tasks/IndexSpecific/" + task.id_pr);
                 }
                 if ( TryUpdateModel(task) && requestTask.Date_St < requestTask.Date_End) // cazul in care este organizator/ admin
                 {
                     task = requestTask;
                     db.SaveChanges();
                     TempData["message"] = "Taskul a fost modificat!";
-                    return RedirectToAction("Index");
+                    return Redirect("/Tasks/IndexSpecific/" + task.id_pr);
                 }
 
                 if (requestTask.Date_St > requestTask.Date_End)
