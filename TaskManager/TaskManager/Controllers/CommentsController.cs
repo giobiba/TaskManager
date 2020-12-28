@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNet.Identity;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -12,17 +13,13 @@ namespace TaskManager.Controllers
     {
 
         private ApplicationDbContext db = new ApplicationDbContext();
-        // GET: Comments
-        public ActionResult Index()
-        {
-            return View();
-        }
-
+        
         [HttpDelete]
         [Authorize(Roles = "User,Organizator,Admin")]
         public ActionResult Delete(int id)
         {
             Comment comm = db.Comments.Find(id);
+
             db.Comments.Remove(comm);
             db.SaveChanges();
             return Redirect("/Tasks/Show/" + comm.id_tsk);
@@ -34,6 +31,13 @@ namespace TaskManager.Controllers
         {
             try
             {
+                Task task = db.Tasks.Find(comm.id_tsk);
+                if (task.Status == "Completed")
+                {
+                    TempData["message"] = "Taskul este finalizat si alte comentarii nu mai pot fi lasate";
+                    return Redirect("/Tasks/Show/" + comm.id_tsk);
+                }
+                
                 db.Comments.Add(comm);
                 db.SaveChanges();
                 return Redirect("/Tasks/Show/" + comm.id_tsk);
@@ -48,6 +52,7 @@ namespace TaskManager.Controllers
         public ActionResult Edit(int id)
         {
             Comment comm = db.Comments.Find(id);
+
             ViewBag.Comment = comm;
             return View(comm);
         }

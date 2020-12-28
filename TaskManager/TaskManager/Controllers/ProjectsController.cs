@@ -34,9 +34,7 @@ namespace TaskManager.Controllers
                                     on prj.id_team equals tems.id_team
                                select prj;
                 ViewBag.Projects = projects;
-
             }
-
             
             if (TempData.ContainsKey("message"))
             {

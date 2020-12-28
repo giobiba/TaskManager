@@ -25,7 +25,6 @@ namespace TaskManager.Controllers
             {
                 ViewBag.message = TempData["message"].ToString();
             }
-            ViewBag.IsOrganizator = false;
             return View();
         }
 
@@ -49,6 +48,16 @@ namespace TaskManager.Controllers
             else
                 ViewBag.User = user.UserName;
             ViewBag.Task = task;
+            if(TempData.ContainsKey("message"))
+            {
+                ViewBag.message = TempData["message"];
+            }
+
+            ViewBag.IsCompleted = false;
+            if (task.Status == "Completed")
+            {
+                ViewBag.IsCompleted = true;
+            }
             return View();
         }
 
@@ -89,12 +98,12 @@ namespace TaskManager.Controllers
 
         // GET pt New
         [Authorize(Roles = "Organizator,Admin")]
-        public ActionResult New()
+        public ActionResult New(int id)
         {
-            var projects = from prj in db.Projects
-                           select prj;
+            var project = db.Projects.Find(id);
             Task task = new Task();
-            ViewBag.Projects = projects;
+            task.id_pr = id;
+            task.Project = project;
             return View(task);
         }
 
@@ -219,7 +228,7 @@ namespace TaskManager.Controllers
                     ViewBag.Message = TempData["message"];
 
 
-                string[] statusuri = { "Not started", "In progress", "completed" };
+                string[] statusuri = { "Not started", "In progress", "Completed" };
                 ViewBag.Status = statusuri;
 
                 ViewBag.IsUser = false;
@@ -273,7 +282,7 @@ namespace TaskManager.Controllers
                                select prj;
                 ViewBag.Projects = projects;
 
-                string[] statusuri = { "Not started", "In progress", "completed" };
+                string[] statusuri = { "Not started", "In progress", "Completed" };
                 ViewBag.Status = statusuri;
 
                 return View(requestTask);
@@ -285,7 +294,7 @@ namespace TaskManager.Controllers
                                select prj;
                 ViewBag.Projects = projects;
 
-                string[] statusuri = { "Not started", "In progress", "completed" };
+                string[] statusuri = { "Not started", "In progress", "Completed" };
                 ViewBag.Status = statusuri;
 
                 return View(requestTask);

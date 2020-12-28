@@ -22,14 +22,7 @@
     <br />
     @Html.TextBox("Date_End", null, new { @type = "date", @class = "form-controller" })
     <br /><br />
-    @{Model.Status = "Not Started";}
-    <label> Selectati Proiectul </label>
-    <select name="id_pr">
-        @foreach (var project in ViewBag.Projects)
-        {
-            <option value="@project.id_pr">@project.Title</option>
-        }
-    </select>
+    @Html.HiddenFor(model => model.id_pr)
 
     <br />
     <button class="btn btn-success" type="submit">Adauga Task</button>
