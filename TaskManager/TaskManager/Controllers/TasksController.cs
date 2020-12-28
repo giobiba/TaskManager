@@ -33,7 +33,10 @@ namespace TaskManager.Controllers
 
         public ActionResult Show(int id)
         {
-            
+            if (TempData.ContainsKey("message"))
+            {
+                ViewBag.message = TempData["message"].ToString();
+            }
             Task task = db.Tasks.Find(id);
             ApplicationUser user = db.Users.Find(task.UserId);
 
@@ -49,6 +52,7 @@ namespace TaskManager.Controllers
             else
                 ViewBag.User = user.UserName;
             ViewBag.Task = task;
+            
             return View();
         }
 

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNet.Identity;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -23,17 +24,32 @@ namespace TaskManager.Controllers
         public ActionResult Delete(int id)
         {
             Comment comm = db.Comments.Find(id);
-            db.Comments.Remove(comm);
-            db.SaveChanges();
-            return Redirect("/Tasks/Show/" + comm.id_tsk);
+            var userId = User.Identity.GetUserId();
+            Team team = db.Teams.Find(db.Projects.Find(db.Tasks.Find(comm.id_tsk).id_pr).id_team);
+            if (comm.UserId == userId || User.IsInRole("Admin") || (User.IsInRole("Organizator") && team.UserId == User.Identity.GetUserId()))
+            {
+                db.Comments.Remove(comm);
+                db.SaveChanges();
+                return Redirect("/Tasks/Show/" + comm.id_tsk);
+            }
+            else
+            {
+                TempData["message"] = "Comentariul nu a fost lasat de tine deci nu poti sa l stergi";
+                return Redirect("/Tasks/Show/" + comm.id_tsk);
+            }
+                
         }
 
         [HttpPost]
         [Authorize(Roles = "User,Organizator,Admin")]
         public ActionResult New(Comment comm)
         {
+            var userId = User.Identity.GetUserId(); // userul curent
+            
             try
             {
+                comm.UserId = userId;
+                comm.User = db.Users.Find(userId);
                 db.Comments.Add(comm);
                 db.SaveChanges();
                 return Redirect("/Tasks/Show/" + comm.id_tsk);
@@ -44,12 +60,24 @@ namespace TaskManager.Controllers
             }
 
         }
+
         [Authorize(Roles = "User,Organizator,Admin")]
         public ActionResult Edit(int id)
         {
+            var userId = User.Identity.GetUserId();
             Comment comm = db.Comments.Find(id);
-            ViewBag.Comment = comm;
-            return View(comm);
+            Team team = db.Teams.Find(db.Projects.Find(db.Tasks.Find(comm.id_tsk).id_pr).id_team);
+            if (comm.UserId == userId || User.IsInRole("Admin") || (User.IsInRole("Organizator") && team.UserId == User.Identity.GetUserId()))
+            {
+                ViewBag.Comment = comm;
+                return View(comm);
+            }
+            else
+            {
+                TempData["message"] = "Comentariul nu a fost lasat de tine deci nu poti sa l editezi";
+                return Redirect("/Tasks/Show/" + comm.id_tsk);
+            }
+                
         }
 
         [HttpPut]
