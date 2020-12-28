@@ -20,15 +20,25 @@
                 @Html.ActionLink("Task Management", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
             </div>
             <div class="navbar-collapse collapse">
-                @if(User.IsInRole("Admin") || User.IsInRole("Organizator") || User.IsInRole("User"))
+                @if(User.IsInRole("Admin") )
                 {
                     <ul class="nav navbar-nav">
                         <li>@Html.ActionLink("Teams", "Index", "Teams")</li>
                         <li>@Html.ActionLink("Projects", "Index", "Projects")</li>
+                        <li>@Html.ActionLink("Users", "Index", "Users")</li>
 
                     </ul>
                 }
-                    
+                else if ( User.IsInRole("Organizator") || User.IsInRole("User"))
+                {
+                    <ul class="nav navbar-nav">
+                        <li>@Html.ActionLink("Teams", "Index", "Teams")</li>
+                        <li>@Html.ActionLink("Projects", "Index", "Projects")</li>
+                    </ul>
+
+                }
+
+
                 @Html.Partial("_LoginPartial")
             </div>
         </div>
