@@ -14,6 +14,7 @@ namespace TaskManager.Models
         public string UserId { get; set; }
         public int id_tsk { get; set; }
         [Required(ErrorMessage = "Orice comentariu trebuie sa aiba continut")]
+        [DataType(DataType.MultilineText)]
         public string Content { get; set; }
 
         public virtual Task Task { get; set; }
