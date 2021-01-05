@@ -21,9 +21,11 @@ namespace TaskManager.Models
         public string Description { get; set; }
         [Display(Name = "Data_St"), Required(ErrorMessage = "Data de inceput este obligatorie")]
         [DataType(DataType.Date)]
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}")]
         public DateTime Date_St { get; set; }
         [Display(Name = "Data_End"), Required(ErrorMessage = "Data de final este obligatorie")]
         [DataType(DataType.Date)]
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}")]
         public DateTime Date_End { get; set; }
 
         public virtual ICollection<Task> Tasks { get; set; }
