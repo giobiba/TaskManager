@@ -170,7 +170,7 @@ namespace TaskManager.Controllers
         {
             // aflam echipa curenta
             var idTeam = (from task in db.Tasks
-                          join project in db.Projects on task.id_pr equals project.id_pr
+                          join project  in db.Projects on task.id_pr equals project.id_pr
                           where task.id_tsk == id
                           select project.id_team).First();
             //verific daca e organizatorul bun sau admin
