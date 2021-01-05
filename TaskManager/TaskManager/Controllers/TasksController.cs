@@ -169,9 +169,10 @@ namespace TaskManager.Controllers
         public ActionResult AddUserToTask(int id)
         {
             // aflam echipa curenta
-            var idTeam = (from pr in db.Projects
-                          join task in db.Tasks on pr.id_pr equals task.id_pr
-                          select pr.id_team).First();
+            var idTeam = (from task in db.Tasks
+                          join project in db.Projects on task.id_pr equals project.id_pr
+                          where task.id_tsk == id
+                          select project.id_team).First();
             //verific daca e organizatorul bun sau admin
             if (User.IsInRole("Organizator"))
             {
