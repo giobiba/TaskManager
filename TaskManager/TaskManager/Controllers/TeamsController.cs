@@ -66,6 +66,12 @@ namespace TaskManager.Controllers
                 {
                     ViewBag.Message = TempData["Message"];
                 }
+
+                ViewBag.IsOrganizator = false;
+                if(User.IsInRole("Organizator") && User.Identity.GetUserId() == team.UserId)
+                {
+                    ViewBag.IsOrganizator = true;
+                }
                 return View(team);
             }
             catch

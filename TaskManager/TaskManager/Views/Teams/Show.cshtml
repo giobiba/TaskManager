@@ -15,19 +15,21 @@
 
     <h3>Organizator: @ViewBag.Organizator.UserName</h3>
 
-    <a class="btn btn-success pull-left"
-       href="/Teams/Edit/@Model.id_team">Modifica echipa</a>
-    <br />
 
-
-    <a class="btn btn-success pull-left"
-       href="/Teams/NewUser/@Model.id_team">Adauga Utilizator</a>
-    <br />
-
-    <form method="post" action="/Teams/Delete/@Model.id_team">
-        @Html.HttpMethodOverride(HttpVerbs.Delete)
-        <button class="btn btn-danger pull-right" type="submit">
-            Sterge Echipa
-        </button>
-    </form>
-</div>
+    @if (User.IsInRole("Admin") || ViewBag.IsOrganizator)
+    {
+        <a class="btn btn-success pull-left"
+           href="/Teams/Edit/@Model.id_team">Modifica echipa</a>
+        
+        <a class="btn btn-success pull-left"
+           href="/Teams/NewUser/@Model.id_team">Adauga Utilizator</a>
+        <br />
+    
+        <form method="post" action="/Teams/Delete/@Model.id_team">
+            @Html.HttpMethodOverride(HttpVerbs.Delete)
+            <button class="btn btn-danger pull-right" type="submit">
+                Sterge Echipa
+            </button>
+        </form>
+    }
+    </div>

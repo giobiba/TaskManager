@@ -15,12 +15,14 @@
 
         <a class="btn btn-success btn-sm" href="/Tasks/IndexSpecific/@Model.id_pr">Afisare taskuri Proiect</a>
         <a class="btn btn-success btn-sm" href="/Projects/Edit/@Model.id_pr">Editeaza Proiect</a>
-
-        <form method="post" action="/Projects/Delete/@Model.id_pr">
-            @Html.HttpMethodOverride(HttpVerbs.Delete)
-            <button class="btn btn-danger pull-right" type="submit">
-                Sterge Proiect
-            </button>
-        </form>
-    </div>
+        @if (User.IsInRole("Admin") || ViewBag.IsOrganizator)
+        {
+            <form method="post" action="/Projects/Delete/@Model.id_pr">
+                @Html.HttpMethodOverride(HttpVerbs.Delete)
+                <button class="btn btn-danger pull-right" type="submit">
+                    Sterge Proiect
+                </button>
+            </form>
+        }
+        </div>
 </div>
