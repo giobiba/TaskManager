@@ -39,10 +39,7 @@
         @class = "text-danger "
     })
     <br />
-    @Html.DropDownListFor(m => m.id_team, new SelectList(Model.Teams, "Value", "Text"),
-    Model.Team.Name, new { @class = "form-control" })
-    @Html.ValidationMessageFor(m => m.id_team, "Echipa este obligatorie", new { @class = "text-danger" })
-    <br />
+    @Html.HiddenFor(model => model.id_team)
     <br />
 
     <button class="btn btn-success" type="submit">Editeaza proiect</button>

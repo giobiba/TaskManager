@@ -150,7 +150,32 @@ namespace TaskManager.Controllers
         public ActionResult New()
         {
             Project project = new Project();
-            project.Teams = GetAllTeams();
+
+            if (User.IsInRole("Admin"))
+            {
+                project.Teams = GetAllTeams();
+            }
+            else
+            {
+                var selectList = new List<SelectListItem>();
+
+                var userId = User.Identity.GetUserId();
+
+                var teams = from cat in db.Teams
+                            where cat.UserId == userId
+                            select cat;
+
+                foreach (var team in teams)
+                {
+                    selectList.Add(new SelectListItem
+                    {
+                        Value = team.id_team.ToString(),
+                        Text = team.Name.ToString()
+                    });
+                }
+
+                project.Teams = selectList;
+            }
 
             if (TempData.ContainsKey("message"))
                 ViewBag.Message = TempData["message"];
