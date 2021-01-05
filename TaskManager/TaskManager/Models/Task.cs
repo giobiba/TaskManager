@@ -16,7 +16,13 @@ namespace TaskManager.Models
         [Required(ErrorMessage = "Campul Descriere este obligatoriu")]
         public String Description { get; set; }
         public String Status { get; set; }
+
+        [DataType(DataType.Date)]
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}")]
         public DateTime Date_St { get; set; }
+
+        [DataType(DataType.Date)]
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}")]
         public DateTime Date_End { get; set; }
         public string UserId { get; set; }
 

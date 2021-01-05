@@ -23,7 +23,8 @@
 
     @Html.Label("Date_St", "Data de inceput")
     <br />
-    @Html.TextBox("Date_St", Model.Date_St, new { @type = "date", @class = "form-controller" })
+    @Html.EditorFor(model => model.Date_St, new { htmlAttributes = new { @Value = @Model.Date_St.ToString("yyyy-MM-dd"), @class = "customclass" } })
+
     @Html.ValidationMessageFor(m => m.Date_St, "Data de starts este obligatoriu", new
     {
         @class = "text-danger "
@@ -33,7 +34,7 @@
 
     @Html.Label("Date_End", "Data de final")
     <br />
-    @Html.TextBox("Date_End", Model.Date_End, new { @type = "date", @class = "form-controller" })
+    @Html.EditorFor(model => model.Date_End, new { htmlAttributes = new { @Value = @Model.Date_End.ToString("yyyy-MM-dd"), @class = "customclass" } })
     @Html.ValidationMessageFor(m => m.Date_End, "Data de final este obligatoriu", new
     {
         @class = "text-danger "

@@ -5,7 +5,7 @@
 
 <form method="post" action="/Tasks/Edit/@Model.id_tsk">
     @Html.HttpMethodOverride(HttpVerbs.Put)
-    @if (ViewBag.IsUser == false)
+    @if (ViewBag.IsUser == false || User.IsInRole("Admin"))
     {
         @Html.HiddenFor(m => m.id_tsk)
         @Html.HiddenFor(m => m.id_pr)
@@ -22,11 +22,11 @@
         <br /><br />
         @Html.Label("Data_St", "Data de start")
         <br />
-        @Html.TextBox("Date_St", Model.Date_St, new { @type = "date", @class = "form-controller" })
+        @Html.EditorFor(model => model.Date_St, new { htmlAttributes = new { @Value = @Model.Date_St.ToString("yyyy-MM-dd"), @class = "customclass" } })
         <br /><br />
         @Html.Label("Date_End", "Data de final")
         <br />
-        @Html.TextBox("Date_End", Model.Date_End, new { @type = "date", @class = "form-controller" })
+        @Html.EditorFor(model => model.Date_End, new { htmlAttributes = new { @Value = @Model.Date_End.ToString("yyyy-MM-dd"), @class = "customclass" } })
         <br /><br />
     }
     <label> Selectati Statusul </label>
