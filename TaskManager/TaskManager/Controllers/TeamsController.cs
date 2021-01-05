@@ -271,23 +271,5 @@ namespace TaskManager.Controllers
                 return RedirectToAction("Index");
             }
         }
-        /*[NonAction]
-        private IEnumerable<SelectListItem> GetAllUsers()
-        {
-            var selectList = new List<SelectListItem>();
-
-            var users = from cat in db.Users select cat;
-
-            foreach(var user in users)
-            {
-                selectList.Add(new SelectListItem
-                {
-                    Value = user.Id.ToString(),
-                    Text = user.Email.ToString()
-                });
-            }
-
-            return selectList;
-        }*/
     }
 }

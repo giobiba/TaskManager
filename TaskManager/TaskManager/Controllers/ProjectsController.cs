@@ -177,6 +177,12 @@ namespace TaskManager.Controllers
                 project.Teams = selectList;
             }
 
+            if(project.Teams.Count() == 0)
+            {
+                TempData["message"] = "Adaugati o echipa";
+                return Redirect("/Teams/New");
+            }
+
             if (TempData.ContainsKey("message"))
                 ViewBag.Message = TempData["message"];
 
