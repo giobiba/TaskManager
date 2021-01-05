@@ -2,6 +2,11 @@
 <h1>@ViewBag.message</h1>
 <h2>Lista taskuri</h2>
 
+@if (User.IsInRole("Admin") || ViewBag.IsOrganizator)
+{
+    <a class="btn btn-success btn-sm" href="/Tasks/New/@ViewBag.Id_pr ">Adauga task</a>
+}
+
 @foreach (var task in ViewBag.Tasks)
 {
     <div class="panel panel-default">

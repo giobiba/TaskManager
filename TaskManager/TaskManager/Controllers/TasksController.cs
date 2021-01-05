@@ -87,6 +87,7 @@ namespace TaskManager.Controllers
                             where tsk.id_pr == id
                             select tsk;
                 ViewBag.Tasks = tasks;
+                ViewBag.Id_pr = id;
 
                 var teamId = (from pr in db.Projects
                               where pr.id_pr == id
