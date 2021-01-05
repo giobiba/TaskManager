@@ -129,20 +129,93 @@ namespace TaskManager.Controllers
  
             ViewBag.Id = id;
             return View();
+        }
 
+        public ActionResult DeleteUser(int id)
+        {
+
+            ViewBag.Id = id;
+            return View();
+
+        }
+
+        [HttpDelete]
+        [Authorize(Roles = "Admin,Organizator")]
+        public ActionResult DeleteUser(int id, string Email)
+        {
+            try
+            {
+                if (User.IsInRole("Organizator"))
+                {
+                    var currUserId = User.Identity.GetUserId();
+                    var team = db.Teams.Find(id);
+
+                    if (currUserId != team.UserId)
+                    {
+                        TempData["Message"] = "Nu sunteti organizator pentru acest proiect";
+                        return RedirectToAction("Index");
+                    }
+                }
+
+                var user_sters = from usr in db.Users
+                                 where usr.Email == Email
+                                 select usr;
+
+                if (user_sters.Count() != 1)
+                {
+                    TempData["Message"] = "Nu exista utilizator cu acest email";
+                    return RedirectToAction("Show/" + id.ToString());
+                }
+
+                var userId = user_sters.First().Id;
+
+                var ut_find = from ut in db.UserTeams
+                              where ut.UserId == userId
+                              select ut;
+                if(ut_find.Count() == 0)
+                {
+                    TempData["Message"] = "Acest utilizator nu face parte din echipa";
+                    return RedirectToAction("Show/" + id.ToString());
+                }
+
+                foreach(var ut in ut_find)
+                {
+                    db.UserTeams.Remove(ut);
+                }
+
+                //stergem utilizatorul de la taskurile sale
+                var tasks = from tsk in db.Tasks
+                            where tsk.UserId == userId
+                            select tsk;
+
+                foreach(var task in tasks)
+                {
+                    task.UserId = null;
+                }
+
+                db.SaveChanges();
+
+                TempData["Message"] = "Utilizatorul a fost sters";
+                return RedirectToAction("Show/" + id.ToString());
+            }
+            catch
+            {
+                return RedirectToAction("Index");
+            }
         }
 
         [HttpPost]
         [Authorize(Roles = "Admin,Organizator")]
         public ActionResult NewUser(int id, string Email) // id reprezinta idul echipei
         {
-            try { 
-                if(User.IsInRole("Organizator"))
+            try
+            {
+                if (User.IsInRole("Organizator"))
                 {
                     var currUserId = User.Identity.GetUserId();
                     var team = db.Teams.Find(id);
 
-                    if(currUserId != team.UserId)
+                    if (currUserId != team.UserId)
                     {
                         TempData["Message"] = "Nu sunteti organizator pentru acest proiect";
                         return RedirectToAction("Index");
@@ -151,26 +224,39 @@ namespace TaskManager.Controllers
                 UserTeams ut = new UserTeams();
                 ut.id_team = id;
                 var user_adaugat = from usr in db.Users
-                        where usr.Email == Email
-                        select usr;
-                if(user_adaugat.Count() != 1)
+                                   where usr.Email == Email
+                                   select usr;
+
+                if (user_adaugat.Count() != 1)
                 {
                     TempData["Message"] = "Nu exista utilizator cu acest email";
                     return RedirectToAction("Show/" + id.ToString());
                 }
+
+                var userId = user_adaugat.First().Id;
+
+                var ut_find = from ut_f in db.UserTeams
+                              where ut_f.UserId == userId
+                              select ut_f;
+
+                if(ut_find.Count() > 0)
+                {
+                    TempData["Message"] = "Acest utilizator este deja in echipa";
+                    return RedirectToAction("Show/" + id.ToString());
+                }
+
                 ut.UserId = user_adaugat.First().Id;
 
                 db.UserTeams.Add(ut);
                 db.SaveChanges();
-                TempData["Message"] = "Membrul a fost adaugata";
+                TempData["Message"] = "Utilizatorul a fost adaugata";
                 return RedirectToAction("Show/" + id.ToString());
-                }
+            }
             catch
             {
                 return RedirectToAction("Index");
             }
         }
-
 
         [Authorize(Roles = "Admin,Organizator")]
         public ActionResult Edit(int id)
@@ -239,7 +325,7 @@ namespace TaskManager.Controllers
                 return View(requestTeam);
             }
         }
-
+        
 
         [HttpDelete]
         [Authorize(Roles = "Admin,Organizator")]

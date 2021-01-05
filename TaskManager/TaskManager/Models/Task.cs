@@ -13,7 +13,9 @@ namespace TaskManager.Models
         public int id_pr { get; set; }
         [Required(ErrorMessage = "Campul Titlu este obligatoriu")]
         public String Title { get; set; }
+
         [Required(ErrorMessage = "Campul Descriere este obligatoriu")]
+        [DataType(DataType.MultilineText)]
         public String Description { get; set; }
         public String Status { get; set; }
 

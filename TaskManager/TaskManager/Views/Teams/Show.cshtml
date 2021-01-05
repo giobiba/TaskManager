@@ -20,11 +20,14 @@
     {
         <a class="btn btn-success pull-left"
            href="/Teams/Edit/@Model.id_team">Modifica echipa</a>
-        
+
         <a class="btn btn-success pull-left"
            href="/Teams/NewUser/@Model.id_team">Adauga Utilizator</a>
+        
+        <a class="btn btn-danger pull-left"
+           href="/Teams/DeleteUser/@Model.id_team">Sterge Utilizator</a>
         <br />
-    
+
         <form method="post" action="/Teams/Delete/@Model.id_team">
             @Html.HttpMethodOverride(HttpVerbs.Delete)
             <button class="btn btn-danger pull-right" type="submit">
@@ -32,4 +35,4 @@
             </button>
         </form>
     }
-    </div>
+</div>

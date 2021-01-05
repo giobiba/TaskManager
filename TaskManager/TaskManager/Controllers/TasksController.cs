@@ -53,7 +53,7 @@ namespace TaskManager.Controllers
                 ViewBag.User = "Acest task nu are utilizator";
             }
             else
-                ViewBag.User = user.UserName;
+            ViewBag.User = user.UserName;
             ViewBag.Task = task;
             if(TempData.ContainsKey("message"))
             {
