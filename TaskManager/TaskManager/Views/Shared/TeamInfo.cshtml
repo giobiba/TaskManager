@@ -1,12 +1,22 @@
-﻿<div class="panel panel-default">
-    <div class="panel-heading">@Model.Name</div>
-    <a class="btn btn-success btn-sm" href="/Teams/Show/@Model.id_team">Afisare echipa</a>
-    <a class="btn btn-success btn-sm" href="/Teams/Edit/@Model.id_team">Editeaza echipa</a>
+﻿
+<div class="card border-primary mb-3" style="margin: 10px;
+        display: inline-block;
+        max-width: 30rem;
+        height: 10rem;
+        border-radius:15px;
+        border: 2px solid #2C3A47;
+        width:200%">
+    <div class="card-body" style="padding-top:10px; padding-left:20px">
+        <div class="card-title">@Model.Name</div>
+        <a class="card-link" href="/Teams/Show/@Model.id_team">Afisare echipa</a>
+        <a class="card-link" href="/Teams/Edit/@Model.id_team">Editeaza echipa</a>
 
-    <form method="post" action="/Teams/Delete/@Model.id_team">
-        @Html.HttpMethodOverride(HttpVerbs.Delete)
-        <button class="btn btn-danger pull-right" type="submit">
-            Sterge Echipa
-        </button>
-    </form>
+        <form class="card-text" method="post" action="/Teams/Delete/@Model.id_team">
+            @Html.HttpMethodOverride(HttpVerbs.Delete)
+            <button class="card-link" type="submit">
+                Sterge Echipa
+            </button>
+
+        </form>
+    </div>
 </div>

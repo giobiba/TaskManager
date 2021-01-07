@@ -1,10 +1,10 @@
 ﻿body {
-    padding-top: 50px;
-    padding-bottom: 20px;
+    height: 100vh;
+    font-family: Cambria, Cochin, Georgia, Times, Times New Roman, serif;
 }
-
 /* Set padding to keep content from hitting the edges */
 .body-content {
+    padding-top: 50px;
     padding-left: 15px;
     padding-right: 15px;
 }
@@ -29,4 +29,20 @@ textarea {
 
 .validation-summary-valid {
     display: none;
+}
+
+.navbar {
+    background-color: #2C3A47;
+}
+
+.navbar-inverse .navbar-brand, .navbar-inverse .navbar-nav > li > a {
+    color: #CAD3C8;
+}
+
+.navbar-inverse .navbar-brand:hover, .navbar-inverse .navbar-brand:focus {
+   color: #f2f1f1
+}
+
+.jumbotron {
+    background-color: #f2f1f1;
 }
