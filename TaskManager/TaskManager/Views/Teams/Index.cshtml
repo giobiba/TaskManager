@@ -3,9 +3,11 @@
 
 <h3 class="danger"> @ViewBag.Message </h3>
 
-@foreach (TaskManager.Models.Team team in ViewBag.Teams)
-{
-    @Html.Partial("TeamInfo", team)
-}
+<div>
+    @foreach (TaskManager.Models.Team team in ViewBag.Teams)
+    {
+        @Html.Partial("TeamInfo", team)
+    }
+</div>
 <br />
-<a class="btn btn-success btn-sm" href="/Teams/New/">Adauga echipa</a>
+<a class="button6" style="background-color:#24ebae" href="/Teams/New/">Adauga echipa</a>

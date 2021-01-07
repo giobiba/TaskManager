@@ -1,12 +1,14 @@
 ﻿@model TaskManager.Models.Team
-@using (Html.BeginForm(actionName: "New", controllerName: "Teams"))
-{ 
-    @Html.Label("Name", "Nume Echipa")
-    @Html.EditorFor(m => m.Name, new { htmlAttributes = new { @class = "form-control" } })
-    @Html.ValidationMessageFor(m => m.Name, "Numele este obligatoriu", new
+<div style="width: 300px; margin: 0 auto; top: 50%; left: 50%;">
+    @using (Html.BeginForm(actionName: "New", controllerName: "Teams"))
     {
-        @class = "text-danger "
-    })
-
-    <button class="btn-success" type="submit"> Adauga Echipa </button>
-}
+        <h3 style="text-align: center">Nume Echipa</h3>
+        @Html.EditorFor(m => m.Name, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.ValidationMessageFor(m => m.Name, "Numele este obligatoriu", new
+        {
+            @class = "text-danger "
+        })
+        <br />
+        <button class="button6" style="background-color:#24ebae; left: 20%" type="submit"> Adauga Echipa </button>
+    }
+</div>
