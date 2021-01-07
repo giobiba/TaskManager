@@ -1,28 +1,48 @@
-﻿<div class="panel panel-default">
-    <div class="panel-heading">@Model.Title</div>
-    <div class="panel-body">
-        Descriere proiect: <strong>@Model.Description</strong>
-        <br />
-        <span class="label label-success">@Model.Date_St</span>
-        <span class="label label-success">@Model.Date_End</span>
-    </div>
-    <div class="panel panel-footer">
+﻿<div class="card border-secondary mb-3"  style="        
+        background-color: #eeeeee;
+        margin: 10px;
+        display: inline-block;
+        max-width: 30rem;
+        border-radius: 15px;
+        border: 2px solid #2C3A47;
+        width: 200%;
+        height: 100%;
+        overflow: auto;
+        padding: 5px 0 0 5px">
+    <div style=" position: relative;
+        height:auto;
+        overflow: hidden;
+        height: 100%;
+        width: 452px;
+        margin: 0px auto;">
 
-        @if (User.IsInRole("Admin") || ViewBag.IsOrganizator)
-        {
-            <a class="btn btn-success btn-sm" href="/Tasks/New/@Model.id_pr">Adauga task</a>
-        }
-
-        <a class="btn btn-success btn-sm" href="/Tasks/IndexSpecific/@Model.id_pr">Afisare taskuri Proiect</a>
-        <a class="btn btn-success btn-sm" href="/Projects/Edit/@Model.id_pr">Editeaza Proiect</a>
-        @if (User.IsInRole("Admin") || ViewBag.IsOrganizator)
-        {
-            <form method="post" action="/Projects/Delete/@Model.id_pr">
-                @Html.HttpMethodOverride(HttpVerbs.Delete)
-                <button class="btn btn-danger pull-right" type="submit">
-                    Sterge Proiect
-                </button>
-            </form>
-        }
+        <div class="card-title">@Model.Title</div>
+        <div class="card-text">
+            <p><strong>Descriere proiect:</strong><br /> @Model.Description</p>
+            <span class="">@Model.Date_St</span> ::
+            <span class="">@Model.Date_End</span>
         </div>
+        <br />
+        <div class="panel panel-footer">
+
+            @if (User.IsInRole("Admin") || ViewBag.IsOrganizator)
+            {
+                <a class="button6" style="background-color: #24ebae;" href="/Tasks/New/@Model.id_pr">Adauga task</a>
+            }
+
+            <a class="button6" style="background-color: #24ebae;" href="/Tasks/IndexSpecific/@Model.id_pr">Afisare taskuri Proiect</a>
+            <br /> <br />
+            <a class="button6" style="background-color: #24ebae;" href="/Projects/Edit/@Model.id_pr">Editeaza Proiect</a>
+            @if (User.IsInRole("Admin") || ViewBag.IsOrganizator)
+            {
+                <form method="post" style="display:inline; padding-left:5px" action="/Projects/Delete/@Model.id_pr">
+                    @Html.HttpMethodOverride(HttpVerbs.Delete)
+                    <button class="button6" type="submit">
+                        Sterge Proiect
+                    </button>
+                </form>
+            }
+        </div>
+        <br />
+    </div>
 </div>

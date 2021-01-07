@@ -3,7 +3,7 @@
 
 <h3 class="danger"> @ViewBag.Message </h3>
 
-<div>
+<div class="d-flex p-2 bd-highlight flex-wrap" style="min-width=100%">
     @foreach (TaskManager.Models.Team team in ViewBag.Teams)
     {
         @Html.Partial("TeamInfo", team)

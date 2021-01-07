@@ -147,37 +147,24 @@ namespace TaskManager.Controllers
             }
         }
 
+        public ActionResult NewPr(int id)
+        {
+            Project project = new Project();
+            project.id_team = id;
+            ViewBag.HasIdTeam = true;
+
+            return View("New", project);
+        }
+
+
+        [Authorize(Roles = "Admin,Organizator")]
         public ActionResult New()
         {
             Project project = new Project();
 
-            if (User.IsInRole("Admin"))
-            {
-                project.Teams = GetAllTeams();
-            }
-            else
-            {
-                var selectList = new List<SelectListItem>();
+            project.Teams = GetAllTeams();
 
-                var userId = User.Identity.GetUserId();
-
-                var teams = from cat in db.Teams
-                            where cat.UserId == userId
-                            select cat;
-
-                foreach (var team in teams)
-                {
-                    selectList.Add(new SelectListItem
-                    {
-                        Value = team.id_team.ToString(),
-                        Text = team.Name.ToString()
-                    });
-                }
-
-                project.Teams = selectList;
-            }
-
-            if(project.Teams.Count() == 0)
+            if (project.Teams.Count() == 0)
             {
                 TempData["message"] = "Adaugati o echipa";
                 return Redirect("/Teams/New");
@@ -186,13 +173,31 @@ namespace TaskManager.Controllers
             if (TempData.ContainsKey("message"))
                 ViewBag.Message = TempData["message"];
 
+            ViewBag.HasIdTeam = false;
+
             return View(project);
         }
         [HttpPost]
+        [Authorize(Roles = "Admin,Organizator")]
         public ActionResult New(Project project)
         {
             if (ModelState.IsValid && project.Date_St < project.Date_End)
             {
+                var idTeam = project.id_team;
+                var idUser = User.Identity.GetUserId();
+                
+                //daca intra in if inseamna ca acea persoana nu face parte din acea echipa
+                if(!User.IsInRole("Admin") && (from ut in db.UserTeams
+                          where ut.id_team == idTeam &&
+                          ut.UserId == idUser
+                          select ut).Count() == 0)
+                {
+
+                    project.Teams = GetAllTeams();
+                    ViewBag.HasIdTeam = false;
+                    return View(project);
+                }
+
                 db.Projects.Add(project);
                 db.SaveChanges();
 
@@ -205,6 +210,7 @@ namespace TaskManager.Controllers
                     TempData["message"] = "Data de inceput trebuie sa fie inaintea datei de final";
 
                 project.Teams = GetAllTeams();
+                ViewBag.HasIdTeam = false;
                 return View(project);
             }
         }
@@ -232,25 +238,51 @@ namespace TaskManager.Controllers
         [NonAction]
         private IEnumerable<SelectListItem> GetAllTeams()
         {
-            // generam o lista goala
-            var selectList = new List<SelectListItem>();
+            
 
-            // extragem toate categoriile din baza de date
-            var teams = from cat in db.Teams
-                             select cat;
 
-            // iteram prin categorii
-            foreach (var team in teams)
+            if (User.IsInRole("Admin"))
             {
-                // adaugam in lista elementele necesare pentru dropdown
-                selectList.Add(new SelectListItem
-                {
-                    Value = team.id_team.ToString(),
-                    Text  = team.Name.ToString()
-                });
-            }
+                // generam o lista goala
+                var selectList = new List<SelectListItem>();
 
-            return selectList;
+                // extragem toate categoriile din baza de date
+                var teams = from cat in db.Teams
+                            select cat;
+
+                // iteram prin categorii
+                foreach (var team in teams)
+                {
+                    // adaugam in lista elementele necesare pentru dropdown
+                    selectList.Add(new SelectListItem
+                    {
+                        Value = team.id_team.ToString(),
+                        Text = team.Name.ToString()
+                    });
+                }
+                return selectList;
+            }
+            else
+            {
+                var selectList = new List<SelectListItem>();
+
+                var userId = User.Identity.GetUserId();
+
+                var teams = from cat in db.Teams
+                            where cat.UserId == userId
+                            select cat;
+
+                foreach (var team in teams)
+                {
+                    selectList.Add(new SelectListItem
+                    {
+                        Value = team.id_team.ToString(),
+                        Text = team.Name.ToString()
+                    });
+                }
+                return selectList;
+            }
+            
         }
     }
 }

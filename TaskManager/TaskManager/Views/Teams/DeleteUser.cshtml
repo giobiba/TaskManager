@@ -1,9 +1,9 @@
 ﻿
 <form method="post" action="/Teams/DeleteUser/@ViewBag.Id">
     @Html.HttpMethodOverride(HttpVerbs.Delete)
-    <label for="Email">Mailul</label><br>
-    <input type="email" name="Email"><br>
-    <button class="btn-success" type="submit"> Adauga Membru </button>
+    <br />
+    <h3>Mailul</h3>
+    <input style="margin:15px 0;" type="email" name="Email">
+    <br />
+    <button class="button6"> Sterge Membru </button>
 </form>
-
-
