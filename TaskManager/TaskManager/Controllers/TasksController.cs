@@ -50,7 +50,7 @@ namespace TaskManager.Controllers
             } 
             if(user == null)
             {
-                ViewBag.User = "Acest task nu are utilizator";
+                ViewBag.User = "Acest task nu are utilizator asignat inca";
             }
             else
             ViewBag.User = user.UserName;

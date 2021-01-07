@@ -1,54 +1,66 @@
-﻿<h3>@ViewBag.message</h3>
+﻿<br />
+@if (ViewBag.message != null)
+{
+    <div class="toast" role="alert" aria-live="assertive" aria-atomic="true" style=" opacity: 100%">
+        <div class="toast-header">
+            <strong class="mr-auto">Task Manager</strong>
+            <small>1 sec ago</small>
+
+        </div>
+        <div class="toast-body">
+            @ViewBag.message
+        </div>
+    </div>
+}
 
 <div class="panel panel-default">
-    <div class="panel-heading">@ViewBag.Task.Title</div>
+    <h1>@ViewBag.Task.Title</h1>
     <div class="panel-body">
-        Descriere task: <strong>@ViewBag.Task.Description</strong>
+        <strong>Descriere task: </strong>@ViewBag.Task.Description
         <br />
-        <span class="label label-success">Perioada: @ViewBag.Task.Date_St -@ViewBag.Task.Date_End </span>
+        <span><strong>Perioada: </strong>@ViewBag.Task.Date_St - @ViewBag.Task.Date_End </span>
         <br />
+        <span><strong>Status: </strong>@ViewBag.Task.Status </span>
         <br />
-        <span class="label label-success">Status: @ViewBag.Task.Status </span>
-        <br />
-        <h5>@ViewBag.User</h5>
+        <span><strong>Responsabil: </strong>@ViewBag.User</span>
         <br />
         <hr>
-        <a class="btn btn-success pull-left"
-           href="/Tasks/Edit/@ViewBag.Task.id_tsk">Modifica task</a>
-        <a class="btn btn-success pull-left"
-           href="/Tasks/AddUserToTask/@ViewBag.Task.id_tsk">Asigneaza utilizator</a>
-        <form method="post" action="/Tasks/Delete/@ViewBag.Task.id_tsk">
-            @Html.HttpMethodOverride(HttpVerbs.Delete)
-            <button class="btn btn-danger pull-right" type="submit">
-                Sterge
-                task
-            </button>
-        </form>
+        <div class="d-flex justify-content-around" >
+            <a class="button6" style="background-color:#24ebae"
+               href="/Tasks/Edit/@ViewBag.Task.id_tsk">Modifica task</a>
+            <a class="button6" style="background-color:#24ebae"
+               href="/Tasks/AddUserToTask/@ViewBag.Task.id_tsk">Asigneaza utilizator</a>
+            <form method="post" action="/Tasks/Delete/@ViewBag.Task.id_tsk" style=" display : inline-block ;  ;">
+                @Html.HttpMethodOverride(HttpVerbs.Delete)
+                <button class="button6" type="submit">
+                    Sterge
+                    task
+                </button>
+            </form>
+        </div>
+        
     </div>
 </div>
-<br />
+<hr />
 
 @foreach (var comm in ViewBag.Task.Comments)
 {
     <div class="container">
         <div class="row">
-            <div class="col-md-2"></div>
             <div class="col-md-8">
-                <span class="label label-success">Comentariu lasat de : @comm.User.UserName </span>
+                <span><strong>Comentariu lasat de : </strong> <span class="badge badge-primary" style="background-color:#CAD3C8; color: black">@comm.User.UserName</span>  </span>
                 <div>
                     <p>@comm.Content</p>
                 </div>
                 @if (User.IsInRole("Admin") || comm.UserId == ViewBag.CurrentUser || ViewBag.IsOrganizator)
                 {
                     <div style="display: inline-block; float : left; margin-right: 15px">
-                        <a class="glyphicon glyphicon-pencil"
-                           href="/Comments/Edit/@comm.id_com"></a>
+                        <a class="button6" style="background-color:#24ebae; color: black;" href="/Comments/Edit/@comm.id_com">🖊️</a>
                     </div>
                     <div style="display: inline-block; float : left">
                         <form method="post" action="/Comments/Delete/@comm.id_com">
                             @Html.HttpMethodOverride(HttpVerbs.Delete)
-                            <button class="glyphicon glyphicon-trash" style="border: none;
-            background: transparent" type="submit"></button>
+                            <button class="button6" type="submit">🗑️</button>
                         </form>
                     </div>
                 }
@@ -63,19 +75,17 @@
 {
     <div class="container">
         <div class="row">
-            <div class="col-md-2">
-            </div>
             <div class="col-md-8">
                 <div class="panel">
                     <form method="post" action="/Comments/New">
                         <div class="panel-body">
                             <input type="hidden" name="id_tsk"
                                    value="@ViewBag.Task.id_tsk" />
-                            <label>Continut comentariu</label>
+                            <label>Introduceti un comentariu daca doriti</label>
                             <br />
                             <textarea class="form-control" name="Content"></textarea>
                             <br />
-                            <button class="btn btn-success " type="submit">
+                            <button class="button6 " style="background-color:#24ebae ; border:none;"  type="submit">
                                 Adauga
                                 comentariu
                             </button>

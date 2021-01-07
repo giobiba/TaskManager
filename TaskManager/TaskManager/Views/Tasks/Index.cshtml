@@ -1,32 +1,64 @@
-﻿
-<h1>@ViewBag.message</h1>
-<h2>Lista taskuri</h2>
+﻿</br>
+<h1>Lista taskuri</h1>
 
-@if (User.IsInRole("Admin") || ViewBag.IsOrganizator)
+@if (ViewBag.message != null)
 {
-    <a class="btn btn-success btn-sm" href="/Tasks/New/@ViewBag.Id_pr ">Adauga task</a>
-}
-
-@foreach (var task in ViewBag.Tasks)
-{
-    <div class="panel panel-default">
-        <div class="panel-heading">@task.Title</div>
-        <div class="panel-body">
-            Descriere task: <strong>@task.Description</strong>
-            <br />
-            <span class="label label-success">Perioada: @task.Date_St -@task.Date_End </span>
-            <span class="label label-success">@task.Status</span>
+    <div class="toast" role="alert" aria-live="assertive" aria-atomic="true" style=" opacity: 100%">
+        <div class="toast-header">
+            <strong class="mr-auto">Task Manager</strong>
+            <small>1 sec ago</small>
+            
         </div>
-        <div class="panel panel-footer">
-            <a class="btn btn-success btn-sm" href="/Tasks/Show/@task.id_tsk">Afisare Task</a>
-            <a class="btn btn-success btn-sm" href="/Tasks/Edit/@task.id_tsk">Editeaza Task</a>
-
-            <form method="post" action="/Tasks/Delete/@task.id_tsk">
-                @Html.HttpMethodOverride(HttpVerbs.Delete)
-                <button class="btn btn-danger pull-right" type="submit">
-                    Sterge Task
-                </button>
-            </form>
+        <div class="toast-body">
+            @ViewBag.message
         </div>
     </div>
 }
+
+
+@if (User.IsInRole("Admin") || ViewBag.IsOrganizator)
+{
+    <a class="button6" style="background-color:#24ebae" href="/Tasks/New/@ViewBag.Id_pr ">Adauga task</a>
+}
+<br />
+
+<div class="d-flex p-2 bd-highlight flex-wrap">
+    @foreach (var task in ViewBag.Tasks)
+    {
+
+        <div class="card border-secondary mb-3" style="        margin: 10px;
+        display: inline-block;
+        max-width: 30rem;
+        height: auto;
+        border-radius: 15px;
+        border: 2px solid #2C3A47;
+        min-width:500px;
+        width: 200%;
+        padding-left: 1rem;
+        padding-top: 1rem;
+        overflow: auto">
+            <div class="card-body" style="padding-top:5px; padding-left:20px">
+                <h3 class="card-title">@task.Title</h3>
+                <div class="card-text">
+                    <strong>Descriere task:</strong> @task.Description
+                    <br />
+                    <span class="badge badge-primary" style="background-color:#9AECDB; color: black"><strong>Perioada:</strong> @task.Date_St - @task.Date_End </span>
+                    <br />
+                    <span class="badge badge-primary" style="background-color:#F97F51; color: black">Status: @task.Status</span>
+                    <br />
+                    <a class="card-link" href="/Tasks/Show/@task.id_tsk">Afisare Task</a>
+                    <a class="card-link" href="/Tasks/Edit/@task.id_tsk">Editeaza Task</a>
+                </div>
+                <div>
+                    <form class="card-text" method="post" style="position: relative; right: 0; bottom: 0; padding: 0 10px 10px 0" method="post" action="/Tasks/Delete/@task.id_tsk">
+                        @Html.HttpMethodOverride(HttpVerbs.Delete)
+                        <button class="button6" type="submit">
+                            Sterge Task
+                        </button>
+                    </form>
+                </div>
+
+            </div>
+        </div>
+    }
+</div>

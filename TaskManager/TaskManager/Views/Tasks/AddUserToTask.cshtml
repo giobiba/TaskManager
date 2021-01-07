@@ -1,8 +1,10 @@
-﻿<form method="post" action="/Tasks/AddUserToTask/@ViewBag.IdTask">
+﻿<br />
+<h1> Asignare utilizator </h1>
+<form method="post" action="/Tasks/AddUserToTask/@ViewBag.IdTask">
     @Html.HttpMethodOverride(HttpVerbs.Put)
     <br />
     @Html.DropDownList("user", new SelectList(ViewBag.Users, "Value", "Text"), "Selectati utilizatorul"
                         , new { @class = "form-control" })
     <br /><br />
-    <button class="btn btn-success" type="submit">Asigneaza utilizator</button>
+          <button class="button6" style="background-color:#24ebae; border:none" type="submit"> Asigneaza utilizator</button>
 </form>
