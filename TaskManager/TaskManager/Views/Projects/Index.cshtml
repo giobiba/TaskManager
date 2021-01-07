@@ -1,7 +1,19 @@
-﻿
-<h2>Lista Proiecte</h2>
+﻿<br />
+<h1>Lista Proiecte</h1>
 
-<h3 class="danger">@ViewBag.Message</h3>
+@if (ViewBag.message != null)
+{
+    <div class="toast" role="alert" aria-live="assertive" aria-atomic="true" style=" opacity: 100%">
+        <div class="toast-header">
+            <strong class="mr-auto">Task Manager</strong>
+            <small>1 sec ago</small>
+
+        </div>
+        <div class="toast-body">
+            @ViewBag.message
+        </div>
+    </div>
+}
 
 @foreach (TaskManager.Models.Project project in ViewBag.Projects)
 {

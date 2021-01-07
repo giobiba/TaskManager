@@ -1,31 +1,32 @@
 ﻿@model TaskManager.Models.Task
 
-<h2>Adaugare nou task</h2>
+<br />
+<h1>Adaugare nou task</h1>
 
 <form method="post" action="/Tasks/New">
-    @Html.Label("Title", "Titlu task")
+    <strong>@Html.Label("Title", "Titlu task")</strong>
     <br />
     @Html.HiddenFor(m => m.id_tsk)
     @Html.TextBox("Title", null, new { @class = "form-controller" })
     @Html.ValidationMessageFor(m => m.Title, "Title este obligatoriu", new { @class = "text-danger " })
     <br /><br />
-    @Html.Label("Description", "Descriere Task")
+    <strong>@Html.Label("Description", "Descriere Task")</strong>
     <br />
     @Html.EditorFor(m => m.Description, new { htmlAttributes = new { @class = "form-control" } })
     @Html.ValidationMessageFor(m => m.Description, "Descriere este obligatoriu", new { @class = "text-danger " })
     <br /><br />
-    @Html.Label("Data_St", "Data de start")
+    <strong>@Html.Label("Data_St", "Data de start")</strong>
     <br />
     @Html.TextBox("Date_St", null, new { @type = "date", @class = "form-controller" })
     <br /><br />
-    @Html.Label("Date_End", "Data de final")
+    <strong>@Html.Label("Date_End", "Data de final")</strong>
     <br />
     @Html.TextBox("Date_End", null, new { @type = "date", @class = "form-controller" })
     <br /><br />
     @Html.HiddenFor(model => model.id_pr)
 
     <br />
-    <button class="btn btn-success" type="submit">Adauga Task</button>
+    <button class="button6" style="background-color:#24ebae; border:none" type="submit"> Adauga Task</button>
 
 </form>
 
