@@ -1,20 +1,38 @@
 ﻿
-<h3 class="danger" style="color:#FD7272;"> @ViewBag.Message </h3>
+@if (ViewBag.message != null)
+{
+    <div class="toast" role="alert" aria-live="assertive" aria-atomic="true" style=" opacity: 100%">
+        <div class="toast-header">
+            <strong class="mr-auto">Task Manager</strong>
+            <small>1 sec ago</small>
+
+        </div>
+        <div class="toast-body">
+            @ViewBag.message
+        </div>
+    </div>
+}
 <div class="container">
     <br />
-    <div><h3>@Model.Name</h3></div>
+    <div><h1>@Model.Name</h1></div>
     <br />
     @foreach (TaskManager.Models.Project project in ViewBag.Projects)
     {
         @Html.Partial("ProjectInfo", project)
     }
-
+    <br />
+    <hr />
+    <strong>Organizator: </strong> @ViewBag.Organizator.UserName
+    <br />
+    <strong>Membrii : </strong>
     @foreach (var user in ViewBag.Users)
     {
-        <h5>@user.UserName</h5>
+       @user.UserName<br />
     }
+    <br />
 
-    <h4>Organizator: @ViewBag.Organizator.UserName</h4>
+
+
 
 
     @if (User.IsInRole("Admin") || ViewBag.IsOrganizator)
@@ -24,7 +42,7 @@
 
         <a class="button6"
            href="/Teams/DeleteUser/@Model.id_team">Sterge Utilizator</a>
-        <br />
+        <hr />
         <br />
         <a class="button6" style="background-color: #24ebae;"
            href="/Teams/Edit/@Model.id_team">Modifica echipa</a>

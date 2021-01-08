@@ -1,22 +1,26 @@
 ﻿@{
  ViewBag.Title = "Afisare utilizatori";
 }
-<ol class="breadcrumb">
-    <li><h3>@ViewBag.Title</h3></li>
-</ol>
+<nav aria-label="breadcrump">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item active" aria-current="page"><h2>@ViewBag.Title</h2></li>
+    </ol>
+</nav>
+
 <div class="d-flex p-2 bd-highlight flex-wrap">
     @foreach (var user in ViewBag.UsersList)
     {
     <div class="border border-dark" style="display: inline-block; margin: 10px; padding:10px; border-radius: 5px">
-        <div class="panel-heading">Nume utilizator: @user.UserName</div>
+        <div class="panel-heading"><strong>Nume utilizator: </strong>@user.UserName</div>
         <div class="panel-body">
-            <i class="glyphicon glyphicon-envelope"></i> Email utilizator: <span class="label label-default">@user.Email</span>
+            <i class="glyphicon glyphicon-envelope"></i> <strong>Email utilizator: </strong><span class="label label-default">@user.Email</span>
             <br /><br />
             @if (@user.PhoneNumber != null)
             {
-                <i class="glyphicon glyphicon-phone"></i>@:Telefon utilizator:<span class="label label-default">@user.PhoneNumber</span>
+                <i class="glyphicon glyphicon-phone"></i> <strong>Telefon utilizator: </strong><span class="label label-default">@user.PhoneNumber</span>
             }
         </div>
+        <br />
         <div class="panel-footer">
             <a class="button6" style="background-color: #24ebae; display:inline" href="/Users/Edit/@user.Id">
                 Editare

@@ -4,31 +4,25 @@
     ViewBag.Title = "Detalii utilizator";
 }
 
-<ol class="breadcrumb">
-    <li><h3>@ViewBag.Title</h3></li>
-</ol>
+<nav aria-label="breadcrump">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item active" aria-current="page"><h2>@ViewBag.Title</h2></li>
+    </ol>
+</nav>
 
-<div class="panel-heading">Nume utilizator: @Model.UserName</div>
+<div class="panel-heading"><strong>Nume utilizator: </strong>@Model.UserName</div>
 
 <div class="panel-body">
 
-    <i class="glyphicon glyphicon-envelope"></i> Email utilizator: <span class="label label-default">@Model.Email</span>
+    <strong>Email utilizator: </strong><span class="label label-default">@Model.Email</span>
     <br />
-    <i class="glyphicon glyphicon-th-list"></i> Rol utilizator: @ViewBag.roleName
+    <strong>Rol utilizator: </strong>@ViewBag.roleName
 
     <br /><br />
 
     @if (@Model.PhoneNumber != null)
     {
-        <i class="glyphicon glyphicon-phone"></i>@:Telefon utilizator:<span class="label label-default">@Model.PhoneNumber</span>
-
-
-
-
-
-
-
-
+        <strong>Telefon utilizator:</strong><span class="label label-default">@Model.PhoneNumber</span>
     }
 
 </div>
@@ -40,7 +34,7 @@
         {
             @Html.HttpMethodOverride(HttpVerbs.Delete)
             <br />
-            <button class="btn btn-success" type="submit">Sterge utilizator</button>
+            <button class="button6" type="submit">Sterge utilizator</button>
 
         }
     </div>

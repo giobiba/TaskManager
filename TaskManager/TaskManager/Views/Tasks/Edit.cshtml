@@ -42,7 +42,8 @@
         @Html.EditorFor(model => model.Date_End, new { htmlAttributes = new { @Value = @Model.Date_End.ToString("yyyy-MM-dd"), @class = "customclass" } })
         <br /><br />
     }
-    <label> <srtong> Selectati Statusul </srtong></label>
+    <label> <strong>Selectati Statusul </strong></label>
+    <br />
     <select name="Status">
         @foreach (var status in ViewBag.Status)
         {

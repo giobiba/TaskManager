@@ -5,9 +5,11 @@
     ViewBag.Title = "Editare rol utilizator";
 }
 
-<ol class="breadcrumb">
-    <li><h3>@ViewBag.Title</h3></li>
-</ol>
+<nav aria-label="breadcrump">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item active" aria-current="page"><h2>@ViewBag.Title</h2></li>
+    </ol>
+</nav>
 
 @using (Html.BeginForm(actionName: "Edit", controllerName: "Users", routeValues: new { id = @Model.Id }))
 {
@@ -15,8 +17,9 @@
 
     <br />
 
-    <i class="glyphicon glyphicon-user"></i>
-    @Html.Label("UserName", "Nume utilizator", new { @class = "" })
+   
+    <strong>@Html.Label("UserName", "Nume utilizator")</strong>
+    
 
     <br />
 
@@ -26,7 +29,7 @@
     <br />
 
     <i class="glyphicon glyphicon-envelope"></i>
-    @Html.Label("Email", "Email utilizator", new { @class = "" })
+    <strong>@Html.Label("Email", "Email utilizator")</strong>
 
     <br />
 
@@ -35,8 +38,7 @@
     <br />
     <br />
 
-    <i class="glyphicon glyphicon-phone"></i>
-    @Html.Label("PhoneNumber", "Numar telefon")
+    <strong>@Html.Label("PhoneNumber", "Numar telefon")</strong>
 
     <br />
 
@@ -45,8 +47,8 @@
     <br />
     <br />
 
-    <i class="glyphicon glyphicon-th-list"></i>
-    <label>Selectati rolul</label>
+    
+    <strong><label>Selectati rolul</label></strong>
     @Html.DropDownList("newRole", new SelectList(Model.AllRoles, "Value", "Text", ViewBag.userRole), null, new { @class = "form-control" })
 
     <br />

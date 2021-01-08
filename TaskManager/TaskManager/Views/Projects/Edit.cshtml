@@ -1,5 +1,5 @@
 ﻿@model TaskManager.Models.Project
-
+<br />
 @if (ViewBag.message != null)
 {
     <div class="toast" role="alert" aria-live="assertive" aria-atomic="true" style=" opacity: 100%">
@@ -17,7 +17,7 @@
 @using (Html.BeginForm(actionName: "Edit", controllerName: "Projects"))
 {
     @Html.HttpMethodOverride(HttpVerbs.Put)
-    @Html.Label("Title", "Titlu Proiect")
+    <strong>@Html.Label("Title", "Titlu Proiect")</strong>
     <br />
     @Html.EditorFor(m => m.Title, new { htmlAttributes = new { @class = "form-control" } })
     @Html.ValidationMessageFor(m => m.Title, "Titlul este obligatoriu", new
@@ -27,13 +27,13 @@
     <br />
     <br />
 
-    @Html.Label("Description", "Descriere proiect")
+    <strong>@Html.Label("Description", "Descriere proiect")</strong>
     <br />
     @Html.EditorFor(m => m.Description, new { htmlAttributes = new { @class = "form-control" } })
     <br />
     <br />
 
-    @Html.Label("Date_St", "Data de inceput")
+    <strong>@Html.Label("Date_St", "Data de inceput")</strong>
     <br />
     @Html.EditorFor(model => model.Date_St, new { htmlAttributes = new { @Value = @Model.Date_St.ToString("yyyy-MM-dd"), @class = "customclass" } })
 
@@ -44,7 +44,7 @@
     <br />
     <br />
 
-    @Html.Label("Date_End", "Data de final")
+    <strong>@Html.Label("Date_End", "Data de final")</strong>
     <br />
     @Html.EditorFor(model => model.Date_End, new { htmlAttributes = new { @Value = @Model.Date_End.ToString("yyyy-MM-dd"), @class = "customclass" } })
     @Html.ValidationMessageFor(m => m.Date_End, "Data de final este obligatoriu", new
