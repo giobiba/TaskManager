@@ -15,5 +15,12 @@
     </div>
 }
 
+<div class="d-flex p-2 bd-highlight flex-wrap" style="min-width=100%">
+    @foreach (TaskManager.Models.Project project in ViewBag.Projects)
+    {
+        @Html.Partial("ProjectInfo", project)
+    }
+</div>
+
 <br />
 <a class="button6" style="background-color: #24ebae;" href="/Projects/New/">Adauga Proiect</a>

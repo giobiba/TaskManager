@@ -15,11 +15,19 @@ namespace TaskManager.Controllers
         // GET: Project
         public ActionResult Index()
         {
+
+            if (TempData.ContainsKey("message"))
+            {
+                ViewBag.Message = TempData["message"];
+            }
+
             ViewBag.IsOrganizator = false;
             if ( User.IsInRole("Admin"))
             {
                 var projects = db.Projects.Include("Team");
                 ViewBag.Projects = projects;
+
+                return View();
             }
             else
             {
@@ -35,14 +43,8 @@ namespace TaskManager.Controllers
                                select prj;
                 ViewBag.Projects = projects;
 
+                return View();
             }
-            
-            if (TempData.ContainsKey("message"))
-            {
-                ViewBag.Message = TempData["message"];
-            }
-            
-            return View();
         }
 
         public ActionResult Show(int id)
